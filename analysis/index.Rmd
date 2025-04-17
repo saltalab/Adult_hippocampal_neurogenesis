@@ -9,4 +9,4 @@ editor_options:
 ---
 
 Welcome to my research website.
-Click on this [Figure1](Fig1_script.html) to see my results.
+[Figure1](Fig1_script.html)
