@@ -45,7 +45,7 @@ source(here("analysis", "Functions.R"))
 ```
 
 
-```{r}
+```{r load}
 adult_raw<-readRDS(here("data","adult_raw.RDS"))
 adult<-readRDS(here("data","adult_filtered.RDS"))
 adult<-SetIdent(adult, value="broad_cell_type")
@@ -53,8 +53,6 @@ adult<-SetIdent(adult, value="broad_cell_type")
 
 ### Supp Fig1A - pre integration
 ```{r}
-
-
 # tiff(here("output", "SupFigures","SupFig1A_1.tiff"), units="in", width=8, height=6, res=300)
 DimPlot(adult, reduction = "umap.unintegrated", group.by = "group", label = F, cols = CFG$groupspal, pt.size = 0.01, raster=FALSE) + xlab("umap_1") + ylab("umap_2")+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))
 # dev.off()
