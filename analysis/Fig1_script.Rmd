@@ -1,0 +1,370 @@
+---
+title: "Figure1_plots"
+output: html_document
+date: "2024-07-19"
+author: "Dilara Ayyildiz"
+---
+
+# QC processing
+
+```{r}
+# read raw file
+library(here)
+source(here("analysis", "Functions.R"))
+adult<-readRDS(here("data","adult_filtered.RDS"))
+adult<-SetIdent(adult, value="broad_cell_type")
+```
+
+
+### Supp Fig1A - pre integration
+```{r}
+# tiff(here("output", "SupFigures","SupFig1A_1.tiff"), units="in", width=8, height=6, res=300)
+DimPlot(adult, reduction = "umap.unintegrated", group.by = "group", label = F, cols = CFG$groupspal, pt.size = 0.01, raster=FALSE) + xlab("umap_1") + ylab("umap_2")+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))
+# dev.off()
+
+# tiff(here("output", "SupFigures","SupFig1A_2.tiff"), units="in", width=8, height=6, res=300)
+DimPlot(adult, reduction = "umap.unintegrated", group.by = "Run", label = F, cols = CFG$mypal[11:16], pt.size = 0.01, raster=FALSE) + xlab("umap_1") + ylab("umap_2")+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))
+# dev.off()
+
+# tiff(here("output", "SupFigures","SupFig1A_3.tiff"), units="in", width=8, height=6, res=300)
+DimPlot(adult, reduction = "umap.unintegrated", group.by = "sample", label = F, cols = CFG$mypal, pt.size = 0.01, raster=FALSE) + xlab("umap_1") + ylab("umap_2")+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))
+# dev.off()
+```
+
+
+### Supp Fig1B
+
+```{r}
+adult_raw<-readRDS(here("data","adult_raw.RDS"))
+qc_thresholds <- read.table(here("data","adult_QC_thresholds.txt"), header = T, sep='\t')
+
+samples<-unique(adult_raw$sample)
+feature_plots <- map(samples, function(sample_id) {
+  print(paste("Processing sample:", sample_id))
+  sObj <- subset(adult_raw, subset = sample == sample_id)
+  fun_nFeatureRNA_plot(sObj, sample_id, qc_thresholds)
+})
+
+# pdf(here("output", "SupFigures","SupFig1B_1.pdf"), width=20, height=16)
+do.call(grid.arrange, c(feature_plots, nrow = 4, ncol = 6))
+# dev.off()
+
+metadata <- adult_raw@meta.data
+
+# pdf(here("output", "SupFigures","SupFig1B_2.pdf"), width=14, height=8)
+metadata$percent_ribo[is.nan(metadata$percent_ribo)] <- 0  # Replace NaN with 0
+metadata$percent_ribo[is.na(metadata$percent_ribo)] <- 0   # Replace NA with 0
+metadata$percent_ribo[metadata$percent_ribo == 0] <- 0.1  # avoid inf values
+medians <- metadata %>%
+  group_by(sample) %>%
+  summarize(median_ribo = median(percent_ribo), .groups = "drop")
+
+ggplot(metadata, aes(x = sample, y = percent_ribo, fill = group)) +
+  geom_violin(scale = "width", trim = F) +
+  geom_point(data = medians, aes(x = sample, y = median_ribo), 
+             color = "black", size = 1, shape = 21, fill = "black") + # Median dots
+  scale_y_log10(labels = label_scientific()) + 
+  scale_fill_manual(values = CFG$groupspal) +   
+  theme_minimal() +                            
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=20), axis.text.y = element_text(size=20), 
+        legend.text = element_text(size = 20), legend.title = element_text(size=20),
+        plot.title = element_text(size = 24, face = "bold"),
+        panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) +
+  labs(title = "pct_ribo", x = "", y = "", fill = "Group")
+# dev.off()
+
+
+# pdf(here("output", "SupFigures","SupFig1B_3.pdf"), width=14, height=8)
+metadata$velocyto_unsplicedratio[metadata$velocyto_unsplicedratio == 0] <- 0.1 # avoid inf values
+medians <- metadata %>%
+  group_by(sample) %>%
+  summarize(median_velo = median(velocyto_unsplicedratio), .groups = "drop")
+
+ggplot(metadata, aes(x = sample, y = velocyto_unsplicedratio, fill = group)) +
+  geom_violin(scale = "width", trim = F) +
+  geom_point(data = medians, aes(x = sample, y = median_velo), 
+             color = "black", size = 1, shape = 21, fill = "black") + # Median dots
+  scale_y_log10(labels = label_scientific()) +  
+  scale_fill_manual(values = CFG$groupspal) +  
+  geom_hline(yintercept = 0.25) +
+  theme_minimal() +                      
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=20), axis.text.y = element_text(size=20), 
+        legend.text = element_text(size = 20), legend.title = element_text(size=20),
+        plot.title = element_text(size = 24, face = "bold"),
+        panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) +
+  labs(title = "Intronic_Ratio", x = "", y = "", fill = "Group")
+# dev.off()
+
+```
+
+
+### Supp Fig1C 
+
+```{r}
+qc_thresholds <- read.table(here("data","adult_QC_thresholds.txt"), header = T, sep='\t')
+
+samples<-unique(adult_raw$sample)
+samples <- samples[order(factor(adult_raw$group[match(samples, adult_raw$sample)], levels = c("CTRL", "MAD", "RES", "SAD")))]
+
+# Apply functions to each sample
+mito_vs_velo_plots <- map(samples, function(sample_id) {
+  print(paste("Processing sample:", sample_id))
+  sObj <- subset(adult_raw, subset = sample == sample_id)
+  fun_mito_velo_plot(sObj, sample_id)
+})
+
+# tiff(here("output", "SupFigures","SupFig1C_1.tiff"), width=24, height=12, units="in", res=300)
+do.call(grid.arrange, c(mito_vs_velo_plots, nrow = 4, ncol = 6))
+# dev.off()
+
+rm(adult_raw)
+gc(full=T)
+```
+
+
+# Raw Data Filtering & Clustering
+
+```{r}
+# adult_filtered <- QC_filtering(adult_raw, qc_thresholds)
+# 
+# adult_filtered <- NormalizeData(object = adult_filtered)
+# adult_filtered <- FindVariableFeatures(adult_filtered)
+# adult_filtered <- ScaleData(adult_filtered)
+# adult_filtered <- RunPCA(adult_filtered)
+# 
+# ElbowPlot(adult_filtered)
+# 
+# adult_filtered <- FindNeighbors(adult_filtered, dims = 1:20)
+# adult_filtered <- FindClusters(adult_filtered, resolution = 1.4)
+# adult_filtered <- RunUMAP(adult_filtered, dims = 1:20, reduction = "pca", reduction.name = "umap.unintegrated")
+#   
+# adult_filtered <- RunHarmony(adult_filtered, c("sample","Run"), plot_convergence = TRUE,  kmeans_init_nstart=20, kmeans_init_iter_max=150)
+# adult_filtered <- RunUMAP(adult_filtered, reduction = "harmony", dims = 1:20, reduction.name='harmony.umap') %>%
+#   FindNeighbors(reduction = "harmony", dims = 1:20) %>%
+#   FindClusters(resolution = 1.4) %>%
+#   identity()
+
+# saveRDS(adult_filtered, file=here("data", "adult_filtered.RDS"))
+```
+
+
+### SuppFig 1A - post integration
+
+```{r}
+# tiff(here("output", "SupFigures","SupFig1A_3.tiff"), units="in", width=8, height=6, res=300)
+DimPlot(adult, reduction = "harmony.umap", group.by = "group", label = F, cols = CFG$groupspal, pt.size = 0.01, raster=FALSE) + xlab("harmony.umap_1") + ylab("harmony.umap_2")+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))
+# dev.off()
+
+
+# tiff(here("output", "SupFigures","SupFig1A_4.tiff"), units="in", width=8, height=6, res=300)
+DimPlot(adult, reduction = "harmony.umap", group.by = "Run", label = F, cols = CFG$mypal[11:16], pt.size = 0.01, raster=FALSE) + xlab("harmony.umap_1") + ylab("harmony.umap_2")+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))
+# dev.off()
+
+# tiff(here("output", "SupFigures","SupFig1A_5.tiff"), units="in", width=8, height=6, res=300)
+DimPlot(adult, reduction = "harmony.umap", group.by = "sample", label = F, cols = CFG$mypal, pt.size = 0.01, raster=FALSE) + xlab("harmony.umap_1") + ylab("harmony.umap_2")+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))
+# dev.off()
+
+```
+
+
+### Fig 1A - Prepared manually
+
+### Fig 1B
+
+```{r}
+
+Donor_info_heatmap <- as.data.frame(read_excel(here("data", "Donor_info_heatmap.xlsx")))
+
+# === PREPARE DATA ===
+## Define character columns
+chr_cols <- c("Sample_name", "Group", "Sex", "APOE")
+
+## Extract numeric columns and convert to numeric
+data_numeric <- Donor_info_heatmap %>% dplyr::select(-all_of(chr_cols)) %>% mutate(across(everything(), as.numeric))
+
+## Combine numeric and character columns
+data <- Donor_info_heatmap %>% dplyr::select(all_of(chr_cols)) %>% bind_cols(data_numeric)
+
+# === DEFINE COLORS ===
+## Color gradients for numeric columns
+numeric_columns <- names(data_numeric)
+color_gradients <- lapply(numeric_columns, function(col_name) {
+  min_val <- min(na.omit(data_numeric[[col_name]]))
+  max_val <- max(na.omit(data_numeric[[col_name]]))
+  circlize::colorRamp2(
+    breaks = c(min_val, max_val),
+    colors = c("lightgrey", "#542437")
+  )
+})
+names(color_gradients) <- numeric_columns
+
+## Categorical colors
+categorical_cols <- list(
+  Group = c("Control" = "#A3BF8C", "Moderate_AD" = "#D08770", "Resilient"= "#808EAF", "Severe_AD"= "#813E3C"),
+  Sex = c("F"="#A5C2B2", "M"= "#6C947F"),
+  APOE = c("33"="#A3B6CB",  "43"="#548FA7", "44"="#59707E", "NA"= "ivory2")
+)
+
+## Merge colors
+heatmap_colors <- c(color_gradients, categorical_cols)
+
+# === CREATE HEATMAP ===
+## Annotation
+ha <- HeatmapAnnotation(df=data %>% dplyr::select(-Sample_name), col = heatmap_colors, na_col = "ivory2")
+
+## Dummy matrix for heatmap
+dummy_matrix <- matrix(1, nrow = 0, ncol = 24)
+
+## Heatmap object
+heatmap <- Heatmap(dummy_matrix, 
+                   name = "Clinical Data", 
+                   top_annotation = ha, 
+                   cluster_columns = FALSE, 
+                   cluster_rows = FALSE,
+                   show_column_names = TRUE,
+                   show_row_names = TRUE,
+                   na_col = "ivory2",  # Color for NA values
+                   heatmap_legend_param = list(
+                     title = "Heatmap Legend",
+                     legend_direction = "horizontal"
+                   ))
+
+# === EXPORT HEATMAP ===
+# pdf(here("output", "Figures", "Figure1B.pdf"), height = 8, width = 10)
+draw(heatmap, annotation_legend_side = "bottom")
+# dev.off()
+
+```
+
+
+### Fig 1C
+
+```{r}
+# === UPPER PANEL UMAP ===
+# tiff(here("output", "Figures","Figure1C_1.tiff"), units="in", width=8, height=6, res=300)
+DimPlot(adult, reduction = "harmony.umap", group.by = "broad_cell_type", label = F, cols = c("#F28C8F", "#ECCF76",  "#6ABEAE",  "#C3894C", "#147F84", "#C69D9C", "#E86562", "#B48DAC", "#F2B8A5"), pt.size = 0.5, raster=FALSE) + xlab("harmony.umap_1") + ylab("harmony.umap_2")
+# dev.off()
+
+# === CREATE THE FEATUREPLOTS ===
+features <- c("AQP4", "CLDN5", "CFAP299", "PROX1", "RBFOX3", "GAD2", "PTPRC", "MOG", "PDGFRA", "DCN")
+plots <- lapply(features, create_feature_plot, data = adult, gradient_colors = CFG$gradient_white, label=F, raster = F, order=T)
+
+# tiff(here("output", "Figures", "Figure1C_2.tiff"), units = "in", width = 40, height = 12, res = 300)
+ggarrange(plotlist = plots, ncol = 5, nrow = 2)
+# dev.off()
+```
+
+
+### Fig 1D
+
+```{r}
+genes<- c("RBFOX3", "SLC17A7",  "CFAP299", "SV2B", "PROX1", "SEMA5A",  "COL25A1", "GAD2", "GAD1", "PDGFRA", "NEU4", "OLIG1", "MOG", "MAG", "MOBP", "PTPRC", "ITGAM", "CSF1R",  "AQP4", "GJA1", "ALDOC", "S100B", "CLDN5", "CD34", "VWF", "DCN", "COL1A2")
+myLevels<-c("ExN_MC/CA", "ExN_GC", "InN", "OPC", "Oligodendrocyte", "Microglia", "Astrocyte", "Endothelia", "VLMC")      
+Idents(adult) <- factor(Idents(adult), levels= rev(myLevels))
+
+# pdf(here("output", "Figures", "Figure1D.pdf"), width=12, height=6)
+DotPlot(adult, features = genes, cols=CFG$gradient_white) +theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size=18), axis.text.y = element_text(size=18), legend.text = element_text(size = 18))
+# dev.off()
+```
+
+
+### Fig 1E
+```{r}
+# === UMAP SPLIT BY GROUP ===
+colors<-c("#F28C8F", "#ECCF76",  "#6ABEAE",  "#C3894C", "#147F84", "#C69D9C", "#E86562", "#B48DAC", "#F2B8A5")
+
+# tiff(here("output", "Figures","Figure1E_1.tiff"), units="in",width=24, height=6, res=300)
+DimPlot(adult, reduction = "harmony.umap", split.by = "group", group.by = "broad_cell_type", label = F, cols = colors, pt.size = 0.5, raster=FALSE) + xlab("harmony.umap_1") + ylab("harmony.umap_2")
+# dev.off()
+
+# === PROPELLER BAR PLOT ===
+output.logit <- propeller(clusters=adult$broad_cell_type, sample=adult$sample, group=adult$group, transform="logit")
+props <- getTransformedProps(clusters=adult$broad_cell_type, sample=adult$group, transform="logit")
+props_df<-as.data.frame(props$Proportions)
+
+# pdf(here("output", "Figures","Figure1E_2.pdf"), width=8, height=6)
+ggplot(props_df, aes(fill=clusters, y=Freq, x=sample)) + scale_fill_manual(values=colors) + geom_bar(position="stack", stat="identity") + theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), axis.text.x = element_text(size=14), axis.text.y = element_text(size=14), legend.text = element_text(size = 14), legend.title = element_text(size = 14))
+# dev.off()
+```
+
+
+### SupFig 1D
+
+```{r}
+data <- data.frame(
+  Study = c("Yao", "Habib", "Ayhan", "Franjic", "Zhou", "This Study"),
+  GC_Percentage = c(19, 10, 7, 23, 23, 53),
+  Non_GC_Percentage = 100 - c(19, 10, 7, 23, 23, 53)
+)
+
+data_long <- melt(data, id.vars = "Study", 
+                  variable.name = "Cell_Type", 
+                  value.name = "Percentage")
+
+# Sort the Study factor levels based on GC_Percentage
+data_long$Study <- factor(data_long$Study, levels = data$Study[order(data$GC_Percentage)])
+
+# Reorder the levels of Cell_Type to ensure GC_Percentage is stacked first
+data_long$Cell_Type <- factor(data_long$Cell_Type, levels = c("Non_GC_Percentage", "GC_Percentage"))
+
+
+# tiff(here("output", "SupFigures", "SupFig1D.tiff"), width = 5, height = 10, units = "in", res = 300)
+ggplot(data_long, aes(x = Study, y = Percentage, fill = Cell_Type)) +
+  geom_bar(stat = "identity", width = 0.7) +
+  scale_fill_manual(values = c("GC_Percentage" = "#A3B6CB", "Non_GC_Percentage" = "lightgrey")) +
+  labs(title = "Percentage of Granule Cells in Various Studies",
+       x = "Study",
+       y = "Percentage of Cells",
+       fill = "Cell Type") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.grid = element_blank()) 
+# dev.off()
+
+```
+
+
+### SupTable1.1
+
+```{r}
+# Table with number of cells per cell type in donors and groups
+# table<-as.data.frame(table(adult@meta.data$broad_cell_type, adult@meta.data$sample))
+# 
+# data_table <- table %>%
+#   pivot_wider(names_from = Var2, values_from = Freq) %>%
+#   column_to_rownames(var = "Var1")
+# 
+# head(table)
+
+# write.table(data_table, here("output", "SupTables","SupTable1_1.txt"), quote = F, sep="\t", row.names = T)
+
+```
+
+
+### SupTable1.2
+
+```{r}
+# Convert Seurat object to pseudo-bulk counts
+# pb <- edgeR::Seurat2PB(adult, sample = "sample", cluster = "broad_cell_type")
+# counts <- pb$counts
+# 
+# # Prepare metadata
+# metadata <- data.frame(cluster = gsub("cluster", "", unlist(str_split_fixed(colnames(pb), "_", 2))[, 2]))
+# rownames(metadata) <- colnames(pb)
+# 
+# # Apply deseq2 function to each cluster
+# clusters <- unique(adult$broad_cell_type)
+# DE_results <- fun_deseq2_cellType(counts, metadata,
+#                                            smallestGroupSize = 20, 
+#                                            use_vst = TRUE, 
+#                                            padj_threshold = 0.05, 
+#                                            log2FC_threshold = 0.5, 
+#                                            minExpression = 10)
+# 
+# # Combine all results
+# DE_result_list <- bind_rows(DE_result_list)
+# 
+# head(DE_result_list)
+# write.table(DE_result_list, here("output", "SupTables","SupTable1_2.txt"), sep="\t", quote = F, row.names = F)
+```
+
