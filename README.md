@@ -5,4 +5,4 @@ A [workflowr][] project.
 [workflowr]: https://github.com/workflowr/workflowr
 
 List of figures:
-[Figure1](docs/Fig1_script.html)
+[Figure1](https://saltalab.github.io/Adult_hippocampal_neurogenesis/Fig1_script.html)
