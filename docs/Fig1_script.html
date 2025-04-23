@@ -31,10 +31,8 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -231,70 +229,10 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
-
-
-
 <style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
+.code-folding-btn { margin-bottom: 4px; }
 </style>
+
 
 
 
@@ -304,16 +242,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -348,6 +276,14 @@ div.tocify {
 </div><!--/.navbar -->
 
 <div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
 
@@ -517,15 +453,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaltalabAdulthippocampalneurogenesistree8a5aa89f4160d892bf532e87e5be2b46303d0d03targetblank8a5aa89a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaltalabAdulthippocampalneurogenesistree0cf0d422063ad76c5958cffc655703332b18f6e7targetblank0cf0d42a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/saltalab/Adult_hippocampal_neurogenesis/tree/8a5aa89f4160d892bf532e87e5be2b46303d0d03" target="_blank">8a5aa89</a>
+<a href="https://github.com/saltalab/Adult_hippocampal_neurogenesis/tree/0cf0d422063ad76c5958cffc655703332b18f6e7" target="_blank">0cf0d42</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomsaltalabAdulthippocampalneurogenesistree8a5aa89f4160d892bf532e87e5be2b46303d0d03targetblank8a5aa89a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomsaltalabAdulthippocampalneurogenesistree0cf0d422063ad76c5958cffc655703332b18f6e7targetblank0cf0d42a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -535,7 +471,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/saltalab/Adult_hippocampal_neurogenesis/tree/8a5aa89f4160d892bf532e87e5be2b46303d0d03" target="_blank">8a5aa89</a>.
+<a href="https://github.com/saltalab/Adult_hippocampal_neurogenesis/tree/0cf0d422063ad76c5958cffc655703332b18f6e7" target="_blank">0cf0d42</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -554,6 +490,7 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/.DS_Store
+    Ignored:    analysis/Fig1_script.nb.html
     Ignored:    analysis/cache/.DS_Store
     Ignored:    data/.DS_Store
     Ignored:    data/CellPhone_sigInteractions.txt
@@ -587,28 +524,8 @@ Ignored files:
     Ignored:    output/SupFigures/
     Ignored:    output/SupTables/
 
-Untracked files:
-    Untracked:  analysis/cache/Figure1/session-info-chunk-inserted-by-workflowr_68efa3d450be29484f327ad920759a1b.RData
-    Untracked:  analysis/cache/Figure1/session-info-chunk-inserted-by-workflowr_68efa3d450be29484f327ad920759a1b.rdb
-    Untracked:  analysis/cache/Figure1/session-info-chunk-inserted-by-workflowr_68efa3d450be29484f327ad920759a1b.rdx
-    Untracked:  analysis/cache/Figure1/unnamed-chunk-12_f7e83ca6795f55aec6db2de6439f2684.RData
-    Untracked:  analysis/cache/Figure1/unnamed-chunk-12_f7e83ca6795f55aec6db2de6439f2684.rdb
-    Untracked:  analysis/cache/Figure1/unnamed-chunk-12_f7e83ca6795f55aec6db2de6439f2684.rdx
-    Untracked:  analysis/cache/Figure1/unnamed-chunk-4_f7f75a2d8d489d87e096de96c68d0732.RData
-    Untracked:  analysis/cache/Figure1/unnamed-chunk-4_f7f75a2d8d489d87e096de96c68d0732.rdb
-    Untracked:  analysis/cache/Figure1/unnamed-chunk-4_f7f75a2d8d489d87e096de96c68d0732.rdx
-
 Unstaged changes:
     Modified:   analysis/Fig1_script.Rmd
-    Deleted:    analysis/cache/Figure1/session-info-chunk-inserted-by-workflowr_372b9d03f8810a8e3e0897a4bae1f5b1.RData
-    Deleted:    analysis/cache/Figure1/session-info-chunk-inserted-by-workflowr_372b9d03f8810a8e3e0897a4bae1f5b1.rdb
-    Deleted:    analysis/cache/Figure1/session-info-chunk-inserted-by-workflowr_372b9d03f8810a8e3e0897a4bae1f5b1.rdx
-    Deleted:    analysis/cache/Figure1/unnamed-chunk-12_3beaaf6147f3c6987d96e5d5100ec07b.RData
-    Deleted:    analysis/cache/Figure1/unnamed-chunk-12_3beaaf6147f3c6987d96e5d5100ec07b.rdb
-    Deleted:    analysis/cache/Figure1/unnamed-chunk-12_3beaaf6147f3c6987d96e5d5100ec07b.rdx
-    Deleted:    analysis/cache/Figure1/unnamed-chunk-4_f179e529f7ff45f110304c69af3c0522.RData
-    Deleted:    analysis/cache/Figure1/unnamed-chunk-4_f179e529f7ff45f110304c69af3c0522.rdb
-    Deleted:    analysis/cache/Figure1/unnamed-chunk-4_f179e529f7ff45f110304c69af3c0522.rdx
 
 </code></pre>
 <p>
@@ -654,6 +571,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/saltalab/Adult_hippocampal_neurogenesis/blob/0cf0d422063ad76c5958cffc655703332b18f6e7/analysis/Fig1_script.Rmd" target="_blank">0cf0d42</a>
+</td>
+<td>
+saltalab
+</td>
+<td>
+2025-04-23
+</td>
+<td>
+Update
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/saltalab/Adult_hippocampal_neurogenesis/0cf0d422063ad76c5958cffc655703332b18f6e7/docs/Fig1_script.html" target="_blank">0cf0d42</a>
+</td>
+<td>
+saltalab
+</td>
+<td>
+2025-04-23
+</td>
+<td>
+Update
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -805,8 +756,8 @@ initial commit
 adult&lt;-SetIdent(adult, value=&quot;broad_cell_type&quot;)
 
 # tiff(here(&quot;output&quot;, &quot;SupFigures&quot;,&quot;SupFig1A_1.tiff&quot;), units=&quot;in&quot;, width=8, height=6, res=300)
-DimPlot(adult, reduction = &quot;umap.unintegrated&quot;, group.by = &quot;group&quot;, label = F, cols = CFG$groupspal, pt.size = 0.01, raster=FALSE) + xlab(&quot;umap_1&quot;) + ylab(&quot;umap_2&quot;)+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-1-1.png" width="960" style="display: block; margin: auto;" /></p>
+DimPlot(adult, reduction = &quot;umap.unintegrated&quot;, group.by = &quot;group&quot;, label = F, cols = CFG$groupspal, pt.size = 0.01, raster=FALSE) + xlab(&quot;umap_1&quot;) + ylab(&quot;umap_2&quot;)+theme(axis.text.x=element_text(size=12),axis.text.y=element_text(size=12), axis.title.x = element_text(size=12), axis.title.y = element_text(size=12), legend.text = element_text(size=12), title = element_text(size=12))</code></pre>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-1-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-1">
 Past versions of unnamed-chunk-1-1.png
@@ -847,8 +798,8 @@ saltalab
 <pre class="r"><code># dev.off()
 
 # tiff(here(&quot;output&quot;, &quot;SupFigures&quot;,&quot;SupFig1A_2.tiff&quot;), units=&quot;in&quot;, width=8, height=6, res=300)
-DimPlot(adult, reduction = &quot;umap.unintegrated&quot;, group.by = &quot;Run&quot;, label = F, cols = CFG$mypal[11:16], pt.size = 0.01, raster=FALSE) + xlab(&quot;umap_1&quot;) + ylab(&quot;umap_2&quot;)+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-1-2.png" width="960" style="display: block; margin: auto;" /></p>
+DimPlot(adult, reduction = &quot;umap.unintegrated&quot;, group.by = &quot;Run&quot;, label = F, cols = CFG$mypal[11:16], pt.size = 0.01, raster=FALSE) + xlab(&quot;umap_1&quot;) + ylab(&quot;umap_2&quot;)+theme(axis.text.x=element_text(size=12),axis.text.y=element_text(size=12), axis.title.x = element_text(size=12), axis.title.y = element_text(size=12), legend.text = element_text(size=12), title = element_text(size=12))</code></pre>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-1-2.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-2">
 Past versions of unnamed-chunk-1-2.png
@@ -889,8 +840,8 @@ saltalab
 <pre class="r"><code># dev.off()
 
 # tiff(here(&quot;output&quot;, &quot;SupFigures&quot;,&quot;SupFig1A_3.tiff&quot;), units=&quot;in&quot;, width=8, height=6, res=300)
-DimPlot(adult, reduction = &quot;umap.unintegrated&quot;, group.by = &quot;sample&quot;, label = F, cols = CFG$mypal, pt.size = 0.01, raster=FALSE) + xlab(&quot;umap_1&quot;) + ylab(&quot;umap_2&quot;)+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-1-3.png" width="960" style="display: block; margin: auto;" /></p>
+DimPlot(adult, reduction = &quot;umap.unintegrated&quot;, group.by = &quot;sample&quot;, label = F, cols = CFG$mypal, pt.size = 0.01, raster=FALSE) + xlab(&quot;umap_1&quot;) + ylab(&quot;umap_2&quot;)+theme(axis.text.x=element_text(size=12),axis.text.y=element_text(size=12), axis.title.x = element_text(size=12), axis.title.y = element_text(size=12), legend.text = element_text(size=12), title = element_text(size=12))</code></pre>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-1-3.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-3">
 Past versions of unnamed-chunk-1-3.png
@@ -933,8 +884,8 @@ saltalab
 rm(adult)
 gc(full=T)</code></pre>
 <pre><code>             used    (Mb) gc trigger    (Mb) limit (Mb)   max used    (Mb)
-Ncells   15951205   851.9   25577124  1366.0         NA   21277516  1136.4
-Vcells 1318824045 10061.9 1851414786 14125.2     122880 1400866046 10687.8</code></pre>
+Ncells   15951069   851.9   25576922  1366.0         NA   21277380  1136.4
+Vcells 1318823272 10061.9 1851413673 14125.2     122880 1400865273 10687.8</code></pre>
 </div>
 <div id="supp-fig1b" class="section level3">
 <h3>Supp Fig1B</h3>
@@ -974,7 +925,7 @@ feature_plots &lt;- map(samples, function(sample_id) {
 [1] &quot;Processing sample: S5R6&quot;</code></pre>
 <pre class="r"><code># pdf(here(&quot;output&quot;, &quot;SupFigures&quot;,&quot;SupFig1B_1.pdf&quot;), width=20, height=16)
 do.call(grid.arrange, c(feature_plots, nrow = 4, ncol = 6))</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-2-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-2-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
 Past versions of unnamed-chunk-2-1.png
@@ -1042,12 +993,12 @@ ggplot(metadata, aes(x = sample, y = percent_ribo, fill = group)) +
   scale_y_log10(labels = label_scientific()) + 
   scale_fill_manual(values = CFG$groupspal) +   
   theme_minimal() +                            
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=20), axis.text.y = element_text(size=20), 
-        legend.text = element_text(size = 20), legend.title = element_text(size=20),
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=12), axis.text.y = element_text(size=12), 
+        legend.text = element_text(size = 20), legend.title = element_text(size=12),
         plot.title = element_text(size = 24, face = &quot;bold&quot;),
         panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) +
   labs(title = &quot;pct_ribo&quot;, x = &quot;&quot;, y = &quot;&quot;, fill = &quot;Group&quot;)</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-2-2.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-2-2.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-2">
 Past versions of unnamed-chunk-2-2.png
@@ -1113,12 +1064,12 @@ ggplot(metadata, aes(x = sample, y = velocyto_unsplicedratio, fill = group)) +
   scale_fill_manual(values = CFG$groupspal) +  
   geom_hline(yintercept = 0.25) +
   theme_minimal() +                      
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=20), axis.text.y = element_text(size=20), 
-        legend.text = element_text(size = 20), legend.title = element_text(size=20),
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=12), axis.text.y = element_text(size=12), 
+        legend.text = element_text(size = 20), legend.title = element_text(size=12),
         plot.title = element_text(size = 24, face = &quot;bold&quot;),
         panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) +
   labs(title = &quot;Intronic_Ratio&quot;, x = &quot;&quot;, y = &quot;&quot;, fill = &quot;Group&quot;)</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-2-3.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-2-3.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-3">
 Past versions of unnamed-chunk-2-3.png
@@ -1208,7 +1159,7 @@ mito_vs_velo_plots &lt;- map(samples, function(sample_id) {
 [1] &quot;Processing sample: S2R5stored&quot;</code></pre>
 <pre class="r"><code># tiff(here(&quot;output&quot;, &quot;SupFigures&quot;,&quot;SupFig1C_1.tiff&quot;), width=24, height=12, units=&quot;in&quot;, res=300)
 do.call(grid.arrange, c(mito_vs_velo_plots, nrow = 4, ncol = 6))</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-3-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-3-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
 Past versions of unnamed-chunk-3-1.png
@@ -1262,8 +1213,8 @@ saltalab
 rm(adult_raw)
 gc(full=T)</code></pre>
 <pre><code>             used    (Mb) gc trigger    (Mb) limit (Mb)   max used    (Mb)
-Ncells   16457578   879.0   25577124  1366.0         NA   25577124  1366.0
-Vcells 2922166044 22294.4 6856287756 52309.4     122880 4385585898 33459.4</code></pre>
+Ncells   16457451   879.0   25576922  1366.0         NA   25576922  1366.0
+Vcells 2922165282 22294.4 6856285835 52309.4     122880 4385585577 33459.4</code></pre>
 </div>
 </div>
 <div id="raw-data-filtering-clustering" class="section level1">
@@ -1294,8 +1245,8 @@ Vcells 2922166044 22294.4 6856287756 52309.4     122880 4385585898 33459.4</code
 adult&lt;-SetIdent(adult, value=&quot;broad_cell_type&quot;)
 
 # tiff(here(&quot;output&quot;, &quot;SupFigures&quot;,&quot;SupFig1A_3.tiff&quot;), units=&quot;in&quot;, width=8, height=6, res=300)
-DimPlot(adult, reduction = &quot;harmony.umap&quot;, group.by = &quot;group&quot;, label = F, cols = CFG$groupspal, pt.size = 0.01, raster=FALSE) + xlab(&quot;harmony.umap_1&quot;) + ylab(&quot;harmony.umap_2&quot;)+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-5-1.png" width="960" style="display: block; margin: auto;" /></p>
+DimPlot(adult, reduction = &quot;harmony.umap&quot;, group.by = &quot;group&quot;, label = F, cols = CFG$groupspal, pt.size = 0.01, raster=FALSE) + xlab(&quot;harmony.umap_1&quot;) + ylab(&quot;harmony.umap_2&quot;)+theme(axis.text.x=element_text(size=12),axis.text.y=element_text(size=12), axis.title.x = element_text(size=12), axis.title.y = element_text(size=12), legend.text = element_text(size=12), title = element_text(size=12))</code></pre>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-5-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
 Past versions of unnamed-chunk-5-1.png
@@ -1337,8 +1288,8 @@ saltalab
 
 
 # tiff(here(&quot;output&quot;, &quot;SupFigures&quot;,&quot;SupFig1A_4.tiff&quot;), units=&quot;in&quot;, width=8, height=6, res=300)
-DimPlot(adult, reduction = &quot;harmony.umap&quot;, group.by = &quot;Run&quot;, label = F, cols = CFG$mypal[11:16], pt.size = 0.01, raster=FALSE) + xlab(&quot;harmony.umap_1&quot;) + ylab(&quot;harmony.umap_2&quot;)+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-5-2.png" width="960" style="display: block; margin: auto;" /></p>
+DimPlot(adult, reduction = &quot;harmony.umap&quot;, group.by = &quot;Run&quot;, label = F, cols = CFG$mypal[11:16], pt.size = 0.01, raster=FALSE) + xlab(&quot;harmony.umap_1&quot;) + ylab(&quot;harmony.umap_2&quot;)+theme(axis.text.x=element_text(size=12),axis.text.y=element_text(size=12), axis.title.x = element_text(size=12), axis.title.y = element_text(size=12), legend.text = element_text(size=12), title = element_text(size=12))</code></pre>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-5-2.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-2">
 Past versions of unnamed-chunk-5-2.png
@@ -1379,8 +1330,8 @@ saltalab
 <pre class="r"><code># dev.off()
 
 # tiff(here(&quot;output&quot;, &quot;SupFigures&quot;,&quot;SupFig1A_5.tiff&quot;), units=&quot;in&quot;, width=8, height=6, res=300)
-DimPlot(adult, reduction = &quot;harmony.umap&quot;, group.by = &quot;sample&quot;, label = F, cols = CFG$mypal, pt.size = 0.01, raster=FALSE) + xlab(&quot;harmony.umap_1&quot;) + ylab(&quot;harmony.umap_2&quot;)+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-5-3.png" width="960" style="display: block; margin: auto;" /></p>
+DimPlot(adult, reduction = &quot;harmony.umap&quot;, group.by = &quot;sample&quot;, label = F, cols = CFG$mypal, pt.size = 0.01, raster=FALSE) + xlab(&quot;harmony.umap_1&quot;) + ylab(&quot;harmony.umap_2&quot;)+theme(axis.text.x=element_text(size=12),axis.text.y=element_text(size=12), axis.title.x = element_text(size=12), axis.title.y = element_text(size=12), legend.text = element_text(size=12), title = element_text(size=12))</code></pre>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-5-3.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-3">
 Past versions of unnamed-chunk-5-3.png
@@ -1484,7 +1435,7 @@ heatmap &lt;- Heatmap(dummy_matrix,
 # === EXPORT HEATMAP ===
 # pdf(here(&quot;output&quot;, &quot;Figures&quot;, &quot;Figure1B.pdf&quot;), height = 8, width = 10)
 draw(heatmap, annotation_legend_side = &quot;bottom&quot;)</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-6-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-6-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
 Past versions of unnamed-chunk-6-1.png
@@ -1529,7 +1480,7 @@ saltalab
 <pre class="r"><code># === UPPER PANEL UMAP ===
 # tiff(here(&quot;output&quot;, &quot;Figures&quot;,&quot;Figure1C_1.tiff&quot;), units=&quot;in&quot;, width=8, height=6, res=300)
 DimPlot(adult, reduction = &quot;harmony.umap&quot;, group.by = &quot;broad_cell_type&quot;, label = F, cols = c(&quot;#F28C8F&quot;, &quot;#ECCF76&quot;,  &quot;#6ABEAE&quot;,  &quot;#C3894C&quot;, &quot;#147F84&quot;, &quot;#C69D9C&quot;, &quot;#E86562&quot;, &quot;#B48DAC&quot;, &quot;#F2B8A5&quot;), pt.size = 0.5, raster=FALSE) + xlab(&quot;harmony.umap_1&quot;) + ylab(&quot;harmony.umap_2&quot;)</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-7-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
 Past versions of unnamed-chunk-7-1.png
@@ -1586,7 +1537,7 @@ plots &lt;- lapply(features, create_feature_plot, data = adult, gradient_colors 
 
 # tiff(here(&quot;output&quot;, &quot;Figures&quot;, &quot;Figure1C_2.tiff&quot;), units = &quot;in&quot;, width = 40, height = 12, res = 300)
 ggarrange(plotlist = plots, ncol = 5, nrow = 2)</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-7-2.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-7-2.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-2">
 Past versions of unnamed-chunk-7-2.png
@@ -1645,7 +1596,7 @@ Idents(adult) &lt;- factor(Idents(adult), levels= rev(myLevels))
 
 # pdf(here(&quot;output&quot;, &quot;Figures&quot;, &quot;Figure1D.pdf&quot;), width=12, height=6)
 DotPlot(adult, features = genes, cols=CFG$gradient_white) +theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size=18), axis.text.y = element_text(size=18), legend.text = element_text(size = 18))</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-8-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-8-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
 Past versions of unnamed-chunk-8-1.png
@@ -1703,7 +1654,7 @@ colors&lt;-c(&quot;#F28C8F&quot;, &quot;#ECCF76&quot;,  &quot;#6ABEAE&quot;,  &q
 
 # tiff(here(&quot;output&quot;, &quot;Figures&quot;,&quot;Figure1E_1.tiff&quot;), units=&quot;in&quot;,width=24, height=6, res=300)
 DimPlot(adult, reduction = &quot;harmony.umap&quot;, split.by = &quot;group&quot;, group.by = &quot;broad_cell_type&quot;, label = F, cols = colors, pt.size = 0.5, raster=FALSE) + xlab(&quot;harmony.umap_1&quot;) + ylab(&quot;harmony.umap_2&quot;)</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-9-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-9-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
 Past versions of unnamed-chunk-9-1.png
@@ -1761,7 +1712,7 @@ props_df&lt;-as.data.frame(props$Proportions)
 
 # pdf(here(&quot;output&quot;, &quot;Figures&quot;,&quot;Figure1E_2.pdf&quot;), width=8, height=6)
 ggplot(props_df, aes(fill=clusters, y=Freq, x=sample)) + scale_fill_manual(values=colors) + geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;) + theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), axis.text.x = element_text(size=14), axis.text.y = element_text(size=14), legend.text = element_text(size = 14), legend.title = element_text(size = 14))</code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-9-2.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-9-2.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-2">
 Past versions of unnamed-chunk-9-2.png
@@ -1842,7 +1793,7 @@ ggplot(data_long, aes(x = Study, y = Percentage, fill = Cell_Type)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         panel.grid = element_blank()) </code></pre>
-<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-10-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Fig1_script.Rmd/unnamed-chunk-10-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
 Past versions of unnamed-chunk-10-1.png
@@ -2166,8 +2117,6 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -2199,36 +2148,12 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-
 <script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
 });
 </script>
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
