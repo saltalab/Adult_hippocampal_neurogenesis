@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Dilara Ayyildiz" />
+<meta name="author" content="Salta Lab" />
 
 <meta name="date" content="2024-07-19" />
 
@@ -352,7 +352,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Figure1_plots</h1>
-<h4 class="author">Dilara Ayyildiz</h4>
+<h4 class="author">Salta Lab</h4>
 <h4 class="date">2024-07-19</h4>
 
 </div>
@@ -361,7 +361,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -372,8 +372,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -386,9 +386,9 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong>
@@ -412,18 +412,21 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
@@ -514,15 +517,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaltalabAdulthippocampalneurogenesistreeca98623d23b5c72de68826b7333d90c1e8f3a38ctargetblankca98623a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomsaltalabAdulthippocampalneurogenesistree8a5aa89f4160d892bf532e87e5be2b46303d0d03targetblank8a5aa89a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/saltalab/Adult_hippocampal_neurogenesis/tree/ca98623d23b5c72de68826b7333d90c1e8f3a38c" target="_blank">ca98623</a>
+<a href="https://github.com/saltalab/Adult_hippocampal_neurogenesis/tree/8a5aa89f4160d892bf532e87e5be2b46303d0d03" target="_blank">8a5aa89</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomsaltalabAdulthippocampalneurogenesistreeca98623d23b5c72de68826b7333d90c1e8f3a38ctargetblankca98623a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomsaltalabAdulthippocampalneurogenesistree8a5aa89f4160d892bf532e87e5be2b46303d0d03targetblank8a5aa89a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -532,7 +535,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/saltalab/Adult_hippocampal_neurogenesis/tree/ca98623d23b5c72de68826b7333d90c1e8f3a38c" target="_blank">ca98623</a>.
+<a href="https://github.com/saltalab/Adult_hippocampal_neurogenesis/tree/8a5aa89f4160d892bf532e87e5be2b46303d0d03" target="_blank">8a5aa89</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -584,6 +587,29 @@ Ignored files:
     Ignored:    output/SupFigures/
     Ignored:    output/SupTables/
 
+Untracked files:
+    Untracked:  analysis/cache/Figure1/session-info-chunk-inserted-by-workflowr_68efa3d450be29484f327ad920759a1b.RData
+    Untracked:  analysis/cache/Figure1/session-info-chunk-inserted-by-workflowr_68efa3d450be29484f327ad920759a1b.rdb
+    Untracked:  analysis/cache/Figure1/session-info-chunk-inserted-by-workflowr_68efa3d450be29484f327ad920759a1b.rdx
+    Untracked:  analysis/cache/Figure1/unnamed-chunk-12_f7e83ca6795f55aec6db2de6439f2684.RData
+    Untracked:  analysis/cache/Figure1/unnamed-chunk-12_f7e83ca6795f55aec6db2de6439f2684.rdb
+    Untracked:  analysis/cache/Figure1/unnamed-chunk-12_f7e83ca6795f55aec6db2de6439f2684.rdx
+    Untracked:  analysis/cache/Figure1/unnamed-chunk-4_f7f75a2d8d489d87e096de96c68d0732.RData
+    Untracked:  analysis/cache/Figure1/unnamed-chunk-4_f7f75a2d8d489d87e096de96c68d0732.rdb
+    Untracked:  analysis/cache/Figure1/unnamed-chunk-4_f7f75a2d8d489d87e096de96c68d0732.rdx
+
+Unstaged changes:
+    Modified:   analysis/Fig1_script.Rmd
+    Deleted:    analysis/cache/Figure1/session-info-chunk-inserted-by-workflowr_372b9d03f8810a8e3e0897a4bae1f5b1.RData
+    Deleted:    analysis/cache/Figure1/session-info-chunk-inserted-by-workflowr_372b9d03f8810a8e3e0897a4bae1f5b1.rdb
+    Deleted:    analysis/cache/Figure1/session-info-chunk-inserted-by-workflowr_372b9d03f8810a8e3e0897a4bae1f5b1.rdx
+    Deleted:    analysis/cache/Figure1/unnamed-chunk-12_3beaaf6147f3c6987d96e5d5100ec07b.RData
+    Deleted:    analysis/cache/Figure1/unnamed-chunk-12_3beaaf6147f3c6987d96e5d5100ec07b.rdb
+    Deleted:    analysis/cache/Figure1/unnamed-chunk-12_3beaaf6147f3c6987d96e5d5100ec07b.rdx
+    Deleted:    analysis/cache/Figure1/unnamed-chunk-4_f179e529f7ff45f110304c69af3c0522.RData
+    Deleted:    analysis/cache/Figure1/unnamed-chunk-4_f179e529f7ff45f110304c69af3c0522.rdb
+    Deleted:    analysis/cache/Figure1/unnamed-chunk-4_f179e529f7ff45f110304c69af3c0522.rdx
+
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not
@@ -628,6 +654,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/saltalab/Adult_hippocampal_neurogenesis/9834c0078cf2b9ec50f449c5151f0c99c2d277c3/docs/Fig1_script.html" target="_blank">9834c00</a>
+</td>
+<td>
+saltalab
+</td>
+<td>
+2025-04-23
+</td>
+<td>
+Update Fig1_script.html
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -890,8 +933,8 @@ saltalab
 rm(adult)
 gc(full=T)</code></pre>
 <pre><code>             used    (Mb) gc trigger    (Mb) limit (Mb)   max used    (Mb)
-Ncells   15951169   851.9   25577092  1366.0         NA   21277480  1136.4
-Vcells 1318823315 10061.9 1851413735 14125.2     122880 1400865316 10687.8</code></pre>
+Ncells   15951205   851.9   25577124  1366.0         NA   21277516  1136.4
+Vcells 1318824045 10061.9 1851414786 14125.2     122880 1400866046 10687.8</code></pre>
 </div>
 <div id="supp-fig1b" class="section level3">
 <h3>Supp Fig1B</h3>
@@ -1219,8 +1262,8 @@ saltalab
 rm(adult_raw)
 gc(full=T)</code></pre>
 <pre><code>             used    (Mb) gc trigger    (Mb) limit (Mb)   max used    (Mb)
-Ncells   16457542   879.0   25577092  1366.0         NA   25577092  1366.0
-Vcells 2922165314 22294.4 6856285938 52309.4     122880 4385585055 33459.4</code></pre>
+Ncells   16457578   879.0   25577124  1366.0         NA   25577124  1366.0
+Vcells 2922166044 22294.4 6856287756 52309.4     122880 4385585898 33459.4</code></pre>
 </div>
 </div>
 <div id="raw-data-filtering-clustering" class="section level1">
@@ -1926,49 +1969,49 @@ attached base packages:
 [8] methods   base     
 
 other attached packages:
- [1] workflowr_1.7.1             viridis_0.6.4              
- [3] viridisLite_0.4.2           UCell_2.6.2                
- [5] tradeSeq_1.16.0             lubridate_1.9.3            
- [7] forcats_1.0.0               readr_2.1.5                
- [9] tidyverse_2.0.0             yardstick_1.2.0            
-[11] workflowsets_1.0.1          workflows_1.1.3            
-[13] tune_1.1.2                  tidyr_1.3.0                
-[15] rsample_1.2.0               recipes_1.0.8              
-[17] parsnip_1.1.1               modeldata_1.2.0            
-[19] infer_1.0.5                 dials_1.2.0                
-[21] scales_1.3.0                broom_1.0.5                
-[23] tidymodels_1.1.1            tibble_3.2.1               
-[25] stringr_1.5.1               speckle_1.2.0              
-[27] slingshot_2.10.0            TrajectoryUtils_1.10.0     
-[29] princurve_2.1.6             SCP_0.5.6                  
-[31] scDblFinder_1.16.0          scCustomize_1.1.3          
-[33] SeuratObject_5.0.1          Seurat_4.4.0               
-[35] readxl_1.4.3                RColorBrewer_1.1-3         
-[37] purrr_1.0.2                 pheatmap_1.0.12            
-[39] org.Hs.eg.db_3.18.0         AnnotationDbi_1.64.1       
-[41] Nebulosa_1.12.0             patchwork_1.3.0.9000       
-[43] nebula_1.5.2                monocle3_1.3.4             
-[45] Matrix.utils_0.9.7          Matrix_1.6-4               
-[47] magrittr_2.0.3              ktplots_2.3.0              
-[49] harmony_1.1.0               Rcpp_1.0.14                
-[51] gridExtra_2.3               ggsignif_0.6.4             
-[53] ggpubr_0.6.0                ggnewscale_0.4.9           
-[55] ggbeeswarm_0.7.2            enrichplot_1.22.0          
-[57] EnhancedVolcano_1.20.0      ggrepel_0.9.4              
-[59] edgeR_4.0.2                 limma_3.58.1               
-[61] easyGgplot2_1.0.0.9000      dunn.test_1.3.6            
-[63] DropletUtils_1.22.0         SingleCellExperiment_1.24.0
-[65] DESeq2_1.42.0               SummarizedExperiment_1.32.0
-[67] MatrixGenerics_1.14.0       matrixStats_1.1.0          
-[69] GenomicRanges_1.54.1        GenomeInfoDb_1.38.1        
-[71] IRanges_2.36.0              S4Vectors_0.40.2           
-[73] data.table_1.14.8           cowplot_1.1.1              
-[75] ComplexHeatmap_2.21.2       clusterProfiler_4.10.1     
-[77] cli_3.6.4                   CellChat_2.1.2             
-[79] Biobase_2.62.0              BiocGenerics_0.48.1        
-[81] ggplot2_3.5.1               igraph_1.5.1               
-[83] dplyr_1.1.4                 biomaRt_2.58.0             
-[85] BiocParallel_1.36.0         here_1.0.1                 
+ [1] viridis_0.6.4               viridisLite_0.4.2          
+ [3] UCell_2.6.2                 tradeSeq_1.16.0            
+ [5] lubridate_1.9.3             forcats_1.0.0              
+ [7] readr_2.1.5                 tidyverse_2.0.0            
+ [9] yardstick_1.2.0             workflowsets_1.0.1         
+[11] workflows_1.1.3             tune_1.1.2                 
+[13] tidyr_1.3.0                 rsample_1.2.0              
+[15] recipes_1.0.8               parsnip_1.1.1              
+[17] modeldata_1.2.0             infer_1.0.5                
+[19] dials_1.2.0                 scales_1.3.0               
+[21] broom_1.0.5                 tidymodels_1.1.1           
+[23] tibble_3.2.1                stringr_1.5.1              
+[25] speckle_1.2.0               slingshot_2.10.0           
+[27] TrajectoryUtils_1.10.0      princurve_2.1.6            
+[29] SCP_0.5.6                   scDblFinder_1.16.0         
+[31] scCustomize_1.1.3           SeuratObject_5.0.1         
+[33] Seurat_4.4.0                readxl_1.4.3               
+[35] RColorBrewer_1.1-3          purrr_1.0.2                
+[37] pheatmap_1.0.12             org.Hs.eg.db_3.18.0        
+[39] AnnotationDbi_1.64.1        Nebulosa_1.12.0            
+[41] patchwork_1.3.0.9000        nebula_1.5.2               
+[43] monocle3_1.3.4              Matrix.utils_0.9.7         
+[45] Matrix_1.6-4                magrittr_2.0.3             
+[47] ktplots_2.3.0               harmony_1.1.0              
+[49] Rcpp_1.0.14                 gridExtra_2.3              
+[51] ggsignif_0.6.4              ggpubr_0.6.0               
+[53] ggnewscale_0.4.9            ggbeeswarm_0.7.2           
+[55] enrichplot_1.22.0           EnhancedVolcano_1.20.0     
+[57] ggrepel_0.9.4               edgeR_4.0.2                
+[59] limma_3.58.1                easyGgplot2_1.0.0.9000     
+[61] dunn.test_1.3.6             DropletUtils_1.22.0        
+[63] SingleCellExperiment_1.24.0 DESeq2_1.42.0              
+[65] SummarizedExperiment_1.32.0 MatrixGenerics_1.14.0      
+[67] matrixStats_1.1.0           GenomicRanges_1.54.1       
+[69] GenomeInfoDb_1.38.1         IRanges_2.36.0             
+[71] S4Vectors_0.40.2            data.table_1.14.8          
+[73] cowplot_1.1.1               ComplexHeatmap_2.21.2      
+[75] clusterProfiler_4.10.1      cli_3.6.4                  
+[77] CellChat_2.1.2              Biobase_2.62.0             
+[79] BiocGenerics_0.48.1         ggplot2_3.5.1              
+[81] igraph_1.5.1                dplyr_1.1.4                
+[83] biomaRt_2.58.0              BiocParallel_1.36.0        
+[85] here_1.0.1                  workflowr_1.7.1            
 
 loaded via a namespace (and not attached):
   [1] ica_1.0-3                 plotly_4.10.4            
@@ -2025,8 +2068,8 @@ loaded via a namespace (and not attached):
 [103] Rtsne_0.16                shape_1.4.6              
 [105] Rsamtools_2.18.0          filelock_1.0.2           
 [107] DiceDesign_1.9            pkgconfig_2.0.3          
-[109] xml2_1.3.6                getPass_0.2-4            
-[111] GenomicAlignments_1.38.0  aplot_0.2.2              
+[109] xml2_1.3.6                GenomicAlignments_1.38.0 
+[111] getPass_0.2-4             aplot_0.2.2              
 [113] spatstat.sparse_3.0-3     ape_5.7-1                
 [115] gridBase_0.4-7            xtable_1.8-4             
 [117] highr_0.10                car_3.1-2                

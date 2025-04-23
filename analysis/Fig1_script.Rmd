@@ -1,8 +1,12 @@
 ---
 title: "Figure1_plots"
-output: html_document
+output: 
+  html_document:
+  code_folding: hide
+  toc: true
+  toc_depth: 2
 date: "2024-07-19"
-author: "Dilara Ayyildiz"
+author: "Salta Lab"
 ---
 
 # QC processing
@@ -20,6 +24,7 @@ knitr::knit_hooks$set(timeit = function(before) {
         print(Sys.time() - NOW)
     }
 })
+
 
 knitr::opts_chunk$set(
     autodep        = TRUE,
