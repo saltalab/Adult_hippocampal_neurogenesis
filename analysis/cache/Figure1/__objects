@@ -1,2 +1,8 @@
-unnamed-chunk-1	adult	adult_raw
+unnamed-chunk-1	BPPARAM	calculate_cocl_pct	CFG	combine_pairs	create_feature_plot	create_name	DynamicPlot2	extract_group_name	filter_AF_MF	filter_interactions	fun_deseq2_cellType	fun_deseq2_groups	fun_mito_velo_plot	fun_nFeatureRNA_plot	fun_umap_param	genebarplot	list_files_recursive	plot_ucell_vlnbox	process_sObj	QC_filtering	read_and_preprocess
 unnamed-chunk-2	adult_raw	feature_plots	medians	metadata	qc_thresholds	samples
+load	adult	adult_raw
+source	BPPARAM	calculate_cocl_pct	CFG	combine_pairs	create_feature_plot	create_name	DynamicPlot2	extract_group_name	filter_AF_MF	filter_interactions	fun_deseq2_cellType	fun_deseq2_groups	fun_mito_velo_plot	fun_nFeatureRNA_plot	fun_umap_param	genebarplot	list_files_recursive	plot_ucell_vlnbox	process_sObj	QC_filtering	read_and_preprocess
+unnamed-chunk-3	adult_raw	feature_plots	medians	metadata	qc_thresholds	samples
+unnamed-chunk-4	
+unnamed-chunk-12	
+session-info-chunk-inserted-by-workflowr	

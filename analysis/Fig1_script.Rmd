@@ -35,24 +35,17 @@ knitr::opts_chunk$set(
     warning        = FALSE,
     timeit         = TRUE
 )
-```
 
-
-```{r source, cache=FALSE}
-# read raw file
 library(here)
 source(here("analysis", "Functions.R"))
 ```
 
 
-```{r load}
-adult_raw<-readRDS(here("data","adult_raw.RDS"))
-adult<-readRDS(here("data","adult_filtered.RDS"))
-adult<-SetIdent(adult, value="broad_cell_type")
-```
-
 ### Supp Fig1A - pre integration
-```{r}
+```{r, cache=FALSE}
+adult<-readRDS(here("data","adult_filtered_light.RDS"))
+adult<-SetIdent(adult, value="broad_cell_type")
+
 # tiff(here("output", "SupFigures","SupFig1A_1.tiff"), units="in", width=8, height=6, res=300)
 DimPlot(adult, reduction = "umap.unintegrated", group.by = "group", label = F, cols = CFG$groupspal, pt.size = 0.01, raster=FALSE) + xlab("umap_1") + ylab("umap_2")+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))
 # dev.off()
@@ -64,12 +57,16 @@ DimPlot(adult, reduction = "umap.unintegrated", group.by = "Run", label = F, col
 # tiff(here("output", "SupFigures","SupFig1A_3.tiff"), units="in", width=8, height=6, res=300)
 DimPlot(adult, reduction = "umap.unintegrated", group.by = "sample", label = F, cols = CFG$mypal, pt.size = 0.01, raster=FALSE) + xlab("umap_1") + ylab("umap_2")+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))
 # dev.off()
+
+rm(adult)
+gc(full=T)
 ```
 
 
 ### Supp Fig1B
+```{r, cache=FALSE}
+adult_raw<-readRDS(here("data","adult_raw.RDS"))
 
-```{r}
 qc_thresholds <- read.table(here("data","adult_QC_thresholds.txt"), header = T, sep='\t')
 
 samples<-unique(adult_raw$sample)
@@ -128,13 +125,12 @@ ggplot(metadata, aes(x = sample, y = velocyto_unsplicedratio, fill = group)) +
         panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) +
   labs(title = "Intronic_Ratio", x = "", y = "", fill = "Group")
 # dev.off()
-
 ```
 
 
 ### Supp Fig1C 
 
-```{r}
+```{r, cache=FALSE}
 qc_thresholds <- read.table(here("data","adult_QC_thresholds.txt"), header = T, sep='\t')
 
 samples<-unique(adult_raw$sample)
@@ -184,7 +180,10 @@ gc(full=T)
 
 ### SuppFig 1A - post integration
 
-```{r}
+```{r, cache=FALSE}
+adult<-readRDS(here("data","adult_filtered_light.RDS"))
+adult<-SetIdent(adult, value="broad_cell_type")
+
 # tiff(here("output", "SupFigures","SupFig1A_3.tiff"), units="in", width=8, height=6, res=300)
 DimPlot(adult, reduction = "harmony.umap", group.by = "group", label = F, cols = CFG$groupspal, pt.size = 0.01, raster=FALSE) + xlab("harmony.umap_1") + ylab("harmony.umap_2")+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20), axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), legend.text = element_text(size=20), title = element_text(size=20))
 # dev.off()
@@ -205,7 +204,7 @@ DimPlot(adult, reduction = "harmony.umap", group.by = "sample", label = F, cols 
 
 ### Fig 1B
 
-```{r}
+```{r, cache=FALSE}
 
 Donor_info_heatmap <- as.data.frame(read_excel(here("data", "Donor_info_heatmap.xlsx")))
 
@@ -273,7 +272,7 @@ draw(heatmap, annotation_legend_side = "bottom")
 
 ### Fig 1C
 
-```{r}
+```{r, cache=FALSE}
 # === UPPER PANEL UMAP ===
 # tiff(here("output", "Figures","Figure1C_1.tiff"), units="in", width=8, height=6, res=300)
 DimPlot(adult, reduction = "harmony.umap", group.by = "broad_cell_type", label = F, cols = c("#F28C8F", "#ECCF76",  "#6ABEAE",  "#C3894C", "#147F84", "#C69D9C", "#E86562", "#B48DAC", "#F2B8A5"), pt.size = 0.5, raster=FALSE) + xlab("harmony.umap_1") + ylab("harmony.umap_2")
@@ -291,7 +290,7 @@ ggarrange(plotlist = plots, ncol = 5, nrow = 2)
 
 ### Fig 1D
 
-```{r}
+```{r, cache=FALSE}
 genes<- c("RBFOX3", "SLC17A7",  "CFAP299", "SV2B", "PROX1", "SEMA5A",  "COL25A1", "GAD2", "GAD1", "PDGFRA", "NEU4", "OLIG1", "MOG", "MAG", "MOBP", "PTPRC", "ITGAM", "CSF1R",  "AQP4", "GJA1", "ALDOC", "S100B", "CLDN5", "CD34", "VWF", "DCN", "COL1A2")
 myLevels<-c("ExN_MC/CA", "ExN_GC", "InN", "OPC", "Oligodendrocyte", "Microglia", "Astrocyte", "Endothelia", "VLMC")      
 Idents(adult) <- factor(Idents(adult), levels= rev(myLevels))
@@ -303,7 +302,7 @@ DotPlot(adult, features = genes, cols=CFG$gradient_white) +theme(axis.text.x = e
 
 
 ### Fig 1E
-```{r}
+```{r, cache=FALSE}
 # === UMAP SPLIT BY GROUP ===
 colors<-c("#F28C8F", "#ECCF76",  "#6ABEAE",  "#C3894C", "#147F84", "#C69D9C", "#E86562", "#B48DAC", "#F2B8A5")
 
@@ -324,7 +323,7 @@ ggplot(props_df, aes(fill=clusters, y=Freq, x=sample)) + scale_fill_manual(value
 
 ### SupFig 1D
 
-```{r}
+```{r, cache=FALSE}
 data <- data.frame(
   Study = c("Yao", "Habib", "Ayhan", "Franjic", "Zhou", "This Study"),
   GC_Percentage = c(19, 10, 7, 23, 23, 53),
@@ -360,15 +359,15 @@ ggplot(data_long, aes(x = Study, y = Percentage, fill = Cell_Type)) +
 
 ### SupTable1.1
 
-```{r}
+```{r, cache=FALSE}
 # Table with number of cells per cell type in donors and groups
-# table<-as.data.frame(table(adult@meta.data$broad_cell_type, adult@meta.data$sample))
-# 
-# data_table <- table %>%
-#   pivot_wider(names_from = Var2, values_from = Freq) %>%
-#   column_to_rownames(var = "Var1")
-# 
-# head(table)
+table<-as.data.frame(table(adult@meta.data$broad_cell_type, adult@meta.data$sample))
+
+data_table <- table %>%
+  pivot_wider(names_from = Var2, values_from = Freq) %>%
+  column_to_rownames(var = "Var1")
+
+head(table)
 
 # write.table(data_table, here("output", "SupTables","SupTable1_1.txt"), quote = F, sep="\t", row.names = T)
 
