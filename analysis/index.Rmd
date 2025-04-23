@@ -10,4 +10,8 @@ editor_options:
 
 Welcome to my research website.
 List:
+<<<<<<< HEAD
 - [Figure 1](https://saltalab.github.io/Adult_hippocampal_neurogenesis/Fig1_script.html)
+=======
+[Figure1](https://saltalab.github.io/Adult_hippocampal_neurogenesis/Fig1_script.html)
+>>>>>>> 64d60c3604eeb3ab069f84b24770edc9abc41fa0
