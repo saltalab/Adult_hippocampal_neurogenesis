@@ -1,5 +1,5 @@
 ---
-title: "Figure1_plots"
+title: "Figure1: Enrichment and transcriptomic characterization of the neurogenic niche in adult human hippocampus"
 output:
   html_notebook: default
   workflowr::wflow_html:
@@ -33,9 +33,6 @@ knitr::opts_chunk$set(
     cache.comments = FALSE,
     echo           = TRUE,
     error          = FALSE,
-    fig.align      = "center",
-    fig.width      = 12,
-    fig.height     = 8,
     message        = FALSE,
     warning        = FALSE,
     timeit         = TRUE
@@ -45,46 +42,46 @@ library(here)
 source(here("analysis", "Functions.R"))
 ```
 
-
-### Supp Fig1A - pre integration
 ```{r, cache=FALSE}
 adult<-readRDS(here("data","adult_filtered_light.RDS"))
 adult<-SetIdent(adult, value="broad_cell_type")
+```
 
-# tiff(here("output", "SupFigures","SupFig1A_1.tiff"), units="in", width=8, height=6, res=300)
+## Supplemetary Fig1 - pre integration {.tabset}
+### group_UMAP
+```{r, cache=FALSE, fig.height=6, fig.width=8, fig.align="center"}
 DimPlot(adult, reduction = "umap.unintegrated", group.by = "group", label = F, cols = CFG$groupspal, pt.size = 0.01, raster=FALSE) + xlab("umap_1") + ylab("umap_2")+theme(axis.text.x=element_text(size=12),axis.text.y=element_text(size=12), axis.title.x = element_text(size=12), axis.title.y = element_text(size=12), legend.text = element_text(size=12), title = element_text(size=12))
-# dev.off()
+```
 
-# tiff(here("output", "SupFigures","SupFig1A_2.tiff"), units="in", width=8, height=6, res=300)
+### run_UMAP
+```{r, cache=FALSE, fig.height=6, fig.width=8, fig.align="center"}
 DimPlot(adult, reduction = "umap.unintegrated", group.by = "Run", label = F, cols = CFG$mypal[11:16], pt.size = 0.01, raster=FALSE) + xlab("umap_1") + ylab("umap_2")+theme(axis.text.x=element_text(size=12),axis.text.y=element_text(size=12), axis.title.x = element_text(size=12), axis.title.y = element_text(size=12), legend.text = element_text(size=12), title = element_text(size=12))
-# dev.off()
+```
 
-# tiff(here("output", "SupFigures","SupFig1A_3.tiff"), units="in", width=8, height=6, res=300)
+### sample_UMAP
+```{r, cache=FALSE, fig.height=6, fig.width=8, fig.align="center"}
 DimPlot(adult, reduction = "umap.unintegrated", group.by = "sample", label = F, cols = CFG$mypal, pt.size = 0.01, raster=FALSE) + xlab("umap_1") + ylab("umap_2")+theme(axis.text.x=element_text(size=12),axis.text.y=element_text(size=12), axis.title.x = element_text(size=12), axis.title.y = element_text(size=12), legend.text = element_text(size=12), title = element_text(size=12))
-# dev.off()
-
-rm(adult)
-gc(full=T)
 ```
 
 
-### Supp Fig1B
-```{r, cache=FALSE}
+## Supplementary Fig1B
+```{r, cache=FALSE, warning=FALSE, fig.height=25, fig.width=20, fig.align='center'}
+rm(adult)
 adult_raw<-readRDS(here("data","adult_raw.RDS"))
 
 qc_thresholds <- read.table(here("data","adult_QC_thresholds.txt"), header = T, sep='\t')
 
 samples<-unique(adult_raw$sample)
 feature_plots <- map(samples, function(sample_id) {
-  print(paste("Processing sample:", sample_id))
+#  print(paste("Processing sample:", sample_id))
   sObj <- subset(adult_raw, subset = sample == sample_id)
   fun_nFeatureRNA_plot(sObj, sample_id, qc_thresholds)
 })
 
-# pdf(here("output", "SupFigures","SupFig1B_1.pdf"), width=20, height=16)
 do.call(grid.arrange, c(feature_plots, nrow = 4, ncol = 6))
-# dev.off()
+```
 
+```{r, cache=FALSE, warning=FALSE, fig.height=6, fig.width=10, fig.align="center"}
 metadata <- adult_raw@meta.data
 
 # pdf(here("output", "SupFigures","SupFig1B_2.pdf"), width=14, height=8)
@@ -103,8 +100,8 @@ ggplot(metadata, aes(x = sample, y = percent_ribo, fill = group)) +
   scale_fill_manual(values = CFG$groupspal) +   
   theme_minimal() +                            
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size=12), axis.text.y = element_text(size=12), 
-        legend.text = element_text(size = 20), legend.title = element_text(size=12),
-        plot.title = element_text(size = 24, face = "bold"),
+        legend.text = element_text(size = 12), legend.title = element_text(size=12),
+        plot.title = element_text(size = 12, face = "bold"),
         panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) +
   labs(title = "pct_ribo", x = "", y = "", fill = "Group")
 # dev.off()
@@ -125,17 +122,16 @@ ggplot(metadata, aes(x = sample, y = velocyto_unsplicedratio, fill = group)) +
   geom_hline(yintercept = 0.25) +
   theme_minimal() +                      
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size=12), axis.text.y = element_text(size=12), 
-        legend.text = element_text(size = 20), legend.title = element_text(size=12),
-        plot.title = element_text(size = 24, face = "bold"),
+        legend.text = element_text(size = 12), legend.title = element_text(size=12),
+        plot.title = element_text(size = 12, face = "bold"),
         panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) +
   labs(title = "Intronic_Ratio", x = "", y = "", fill = "Group")
 # dev.off()
 ```
 
 
-### Supp Fig1C 
-
-```{r, cache=FALSE}
+## Supplementary Fig1C 
+```{r, cache=FALSE, warning=FALSE, fig.height=25, fig.width=30, fig.align="center"}
 qc_thresholds <- read.table(here("data","adult_QC_thresholds.txt"), header = T, sep='\t')
 
 samples<-unique(adult_raw$sample)
@@ -143,7 +139,7 @@ samples <- samples[order(factor(adult_raw$group[match(samples, adult_raw$sample)
 
 # Apply functions to each sample
 mito_vs_velo_plots <- map(samples, function(sample_id) {
-  print(paste("Processing sample:", sample_id))
+#  print(paste("Processing sample:", sample_id))
   sObj <- subset(adult_raw, subset = sample == sample_id)
   fun_mito_velo_plot(sObj, sample_id)
 })
@@ -157,8 +153,7 @@ gc(full=T)
 ```
 
 
-# Raw Data Filtering & Clustering
-
+## Raw Data Filtering & Clustering
 ```{r}
 # adult_filtered <- QC_filtering(adult_raw, qc_thresholds)
 # 
@@ -183,34 +178,31 @@ gc(full=T)
 ```
 
 
-### SuppFig 1A - post integration
-
 ```{r, cache=FALSE}
 adult<-readRDS(here("data","adult_filtered_light.RDS"))
 adult<-SetIdent(adult, value="broad_cell_type")
+```
 
-# tiff(here("output", "SupFigures","SupFig1A_3.tiff"), units="in", width=8, height=6, res=300)
+## Supplementary Fig1A - post integration {.tabset}
+### group_UMAP
+```{r,cache=FALSE, fig.height=6, fig.width=8, fig.align="center"}
 DimPlot(adult, reduction = "harmony.umap", group.by = "group", label = F, cols = CFG$groupspal, pt.size = 0.01, raster=FALSE) + xlab("harmony.umap_1") + ylab("harmony.umap_2")+theme(axis.text.x=element_text(size=12),axis.text.y=element_text(size=12), axis.title.x = element_text(size=12), axis.title.y = element_text(size=12), legend.text = element_text(size=12), title = element_text(size=12))
-# dev.off()
+```
 
-
-# tiff(here("output", "SupFigures","SupFig1A_4.tiff"), units="in", width=8, height=6, res=300)
+### run_UMAP
+```{r,cache=FALSE, fig.height=6, fig.width=8, fig.align="center"}
 DimPlot(adult, reduction = "harmony.umap", group.by = "Run", label = F, cols = CFG$mypal[11:16], pt.size = 0.01, raster=FALSE) + xlab("harmony.umap_1") + ylab("harmony.umap_2")+theme(axis.text.x=element_text(size=12),axis.text.y=element_text(size=12), axis.title.x = element_text(size=12), axis.title.y = element_text(size=12), legend.text = element_text(size=12), title = element_text(size=12))
-# dev.off()
+```
 
-# tiff(here("output", "SupFigures","SupFig1A_5.tiff"), units="in", width=8, height=6, res=300)
+### sample_UMAP
+```{r,cache=FALSE, fig.height=6, fig.width=8, fig.align="center"}
 DimPlot(adult, reduction = "harmony.umap", group.by = "sample", label = F, cols = CFG$mypal, pt.size = 0.01, raster=FALSE) + xlab("harmony.umap_1") + ylab("harmony.umap_2")+theme(axis.text.x=element_text(size=12),axis.text.y=element_text(size=12), axis.title.x = element_text(size=12), axis.title.y = element_text(size=12), legend.text = element_text(size=12), title = element_text(size=12))
-# dev.off()
-
 ```
 
 
-### Fig 1A - Prepared manually
-
-### Fig 1B
-
-```{r, cache=FALSE}
-
+## Figure 1A - Prepared manually
+## Figure 1B
+```{r, cache=FALSE, fig.height=8, fig.width=15, fig.align="center"}
 Donor_info_heatmap <- as.data.frame(read_excel(here("data", "Donor_info_heatmap.xlsx")))
 
 # === PREPARE DATA ===
@@ -275,58 +267,60 @@ draw(heatmap, annotation_legend_side = "bottom")
 ```
 
 
-### Fig 1C
-
-```{r, cache=FALSE}
+## Fig 1C
+```{r, cache=FALSE, fig.height=6, fig.width=8, fig.align='center'}
 # === UPPER PANEL UMAP ===
 # tiff(here("output", "Figures","Figure1C_1.tiff"), units="in", width=8, height=6, res=300)
 DimPlot(adult, reduction = "harmony.umap", group.by = "broad_cell_type", label = F, cols = c("#F28C8F", "#ECCF76",  "#6ABEAE",  "#C3894C", "#147F84", "#C69D9C", "#E86562", "#B48DAC", "#F2B8A5"), pt.size = 0.5, raster=FALSE) + xlab("harmony.umap_1") + ylab("harmony.umap_2")
 # dev.off()
 
+```
+
+
+```{r, cache=FALSE, fig.height=16, fig.width=40, fig.align='center'}
 # === CREATE THE FEATUREPLOTS ===
 features <- c("AQP4", "CLDN5", "CFAP299", "PROX1", "RBFOX3", "GAD2", "PTPRC", "MOG", "PDGFRA", "DCN")
 plots <- lapply(features, create_feature_plot, data = adult, gradient_colors = CFG$gradient_white, label=F, raster = F, order=T)
 
-# tiff(here("output", "Figures", "Figure1C_2.tiff"), units = "in", width = 40, height = 12, res = 300)
 ggarrange(plotlist = plots, ncol = 5, nrow = 2)
-# dev.off()
 ```
 
 
-### Fig 1D
-
-```{r, cache=FALSE}
+## Fig 1D
+```{r, cache=FALSE, fig.height=8, fig.width=12, fig.align='center'}
 genes<- c("RBFOX3", "SLC17A7",  "CFAP299", "SV2B", "PROX1", "SEMA5A",  "COL25A1", "GAD2", "GAD1", "PDGFRA", "NEU4", "OLIG1", "MOG", "MAG", "MOBP", "PTPRC", "ITGAM", "CSF1R",  "AQP4", "GJA1", "ALDOC", "S100B", "CLDN5", "CD34", "VWF", "DCN", "COL1A2")
 myLevels<-c("ExN_MC/CA", "ExN_GC", "InN", "OPC", "Oligodendrocyte", "Microglia", "Astrocyte", "Endothelia", "VLMC")      
 Idents(adult) <- factor(Idents(adult), levels= rev(myLevels))
 
 # pdf(here("output", "Figures", "Figure1D.pdf"), width=12, height=6)
-DotPlot(adult, features = genes, cols=CFG$gradient_white) +theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size=18), axis.text.y = element_text(size=18), legend.text = element_text(size = 18))
+DotPlot(adult, features = genes, cols=CFG$gradient_white) +theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size=12), axis.text.y = element_text(size=12), legend.text = element_text(size = 12))
 # dev.off()
 ```
 
 
-### Fig 1E
-```{r, cache=FALSE}
+## Fig 1E
+```{r, cache=FALSE, fig.height=6, fig.width=16, fig.align='center'}
 # === UMAP SPLIT BY GROUP ===
 colors<-c("#F28C8F", "#ECCF76",  "#6ABEAE",  "#C3894C", "#147F84", "#C69D9C", "#E86562", "#B48DAC", "#F2B8A5")
 
 # tiff(here("output", "Figures","Figure1E_1.tiff"), units="in",width=24, height=6, res=300)
 DimPlot(adult, reduction = "harmony.umap", split.by = "group", group.by = "broad_cell_type", label = F, cols = colors, pt.size = 0.5, raster=FALSE) + xlab("harmony.umap_1") + ylab("harmony.umap_2")
 # dev.off()
+```
 
+```{r, cache=FALSE, fig.height=8, fig.width=10, fig.align='center'}
 # === PROPELLER BAR PLOT ===
 output.logit <- propeller(clusters=adult$broad_cell_type, sample=adult$sample, group=adult$group, transform="logit")
 props <- getTransformedProps(clusters=adult$broad_cell_type, sample=adult$group, transform="logit")
 props_df<-as.data.frame(props$Proportions)
 
 # pdf(here("output", "Figures","Figure1E_2.pdf"), width=8, height=6)
-ggplot(props_df, aes(fill=clusters, y=Freq, x=sample)) + scale_fill_manual(values=colors) + geom_bar(position="stack", stat="identity") + theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), axis.text.x = element_text(size=14), axis.text.y = element_text(size=14), legend.text = element_text(size = 14), legend.title = element_text(size = 14))
+ggplot(props_df, aes(fill=clusters, y=Freq, x=sample)) + scale_fill_manual(values=colors) + geom_bar(position="stack", stat="identity") + theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), legend.text = element_text(size = 12), legend.title = element_text(size = 12))
 # dev.off()
 ```
 
 
-### SupFig 1D
+## SupFig 1D
 
 ```{r, cache=FALSE}
 data <- data.frame(

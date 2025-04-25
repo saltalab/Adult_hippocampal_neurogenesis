@@ -44,7 +44,7 @@ suppressPackageStartupMessages({
   library(SingleCellExperiment)
   library(slingshot)
   library(speckle)
-  library(stringr) 
+  library(stringr)
   library(tibble)
   library(tidymodels)
   library(tidyr)
@@ -77,26 +77,26 @@ RNGversion("3.5.0")
 fun_mito_velo_plot <- function(sObj, sample_id) {
   metadata<-sObj@meta.data
   ggplot(metadata, aes(
-    x = qlogis(percent_mito / 100), 
+    x = qlogis(percent_mito / 100),
     y = qlogis(velocyto_unsplicedratio)
   )) +
     geom_bin2d() +
     scale_x_continuous(labels = function(x) round(100 * plogis(x), digits = 1)) +
     scale_y_continuous(labels = function(x) round(100 * plogis(x), digits = 1)) +
-    geom_vline(xintercept = qlogis(10 / 100)) + 
-    geom_hline(yintercept = qlogis(25 / 100)) + 
-    ggtitle(paste0("Sample ", sample_id)) + 
-    xlab("pct_mito") + 
-    ylab("intronic_ratio") +  
+    geom_vline(xintercept = qlogis(10 / 100)) +
+    geom_hline(yintercept = qlogis(25 / 100)) +
+    ggtitle(paste0("Sample ", sample_id)) +
+    xlab("pct_mito") +
+    ylab("intronic_ratio") +
     scale_fill_gradientn(colors = CFG$gradient_colors) +
     theme(
-      plot.title = element_text(size = 20),
-      axis.text.x = element_text(size = 20),
-      axis.text.y = element_text(size = 20),
-      axis.title.x = element_text(size = 20),
-      axis.title.y = element_text(size = 20),
-      legend.text = element_text(size = 20),
-      title = element_text(size = 20)
+      plot.title = element_text(size = 12),
+      axis.text.x = element_text(size = 12),
+      axis.text.y = element_text(size = 12),
+      axis.title.x = element_text(size = 12),
+      axis.title.y = element_text(size = 12),
+      legend.text = element_text(size = 12),
+      title = element_text(size = 12)
     )
 }
 
@@ -104,31 +104,31 @@ fun_mito_velo_plot <- function(sObj, sample_id) {
 fun_nFeatureRNA_plot <- function(sObj, sample_id, qc_thresholds) {
   metadata <- sObj@meta.data
   metadata$nFeature_RNA[metadata$nFeature_RNA == 0] <- 0.1
-  
+
   # Calculate medians for each sample
   medians <- metadata %>%
     group_by(sample) %>%
     summarize(median_nFeature = median(nFeature_RNA), .groups = "drop")
-  
+
   ggplot(metadata, aes(x = sample, y = nFeature_RNA, fill = group)) +
-    geom_violin(scale = "width", trim = FALSE) + 
-    geom_point(data = medians, aes(x = sample, y = median_nFeature), 
+    geom_violin(scale = "width", trim = FALSE) +
+    geom_point(data = medians, aes(x = sample, y = median_nFeature),
                color = "black", size = 1, shape = 21, fill = "black") +  # Median dots
     scale_y_log10(labels = label_scientific()) +  # Apply log scale
     scale_fill_manual(values = CFG$groupspal) +   # Map colors to groups
     geom_hline(yintercept = qc_thresholds$nFeature_RNA_min[which(qc_thresholds$Sample == sample_id)]) +
     geom_hline(yintercept = qc_thresholds$nFeature_RNA_max[which(qc_thresholds$Sample == sample_id)]) +
-    theme_minimal() + 
+    theme_minimal() +
     theme(
-      axis.text.x = element_text(angle = 45, hjust = 1, size = 20),
-      axis.text.y = element_text(size = 20),
-      legend.text = element_text(size = 20),
-      legend.title = element_text(size = 20),
-      plot.title = element_text(size = 24, face = "bold"),
+      axis.text.x = element_text(angle = 45, hjust = 1, size = 12),
+      axis.text.y = element_text(size = 12),
+      legend.text = element_text(size = 12),
+      legend.title = element_text(size = 12),
+      plot.title = element_text(size = 12, face = "bold"),
       panel.border = element_blank(),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank()
-    ) + 
+    ) +
     labs(title = "nFeature_RNA", x = "", y = "", fill = "Group") +
     NoLegend()
 }
@@ -136,9 +136,9 @@ fun_nFeatureRNA_plot <- function(sObj, sample_id, qc_thresholds) {
 
 ### Function for QC filtering
 QC_filtering <- function(seurat_obj, qc_thresholds) {
-  
+
   filtered_list <- list()
-  
+
   # Loop over each sample in the metadata
   for (sample_name in unique(qc_thresholds$Sample)) {
     # Get the filtering parameters for the current sample
@@ -147,13 +147,13 @@ QC_filtering <- function(seurat_obj, qc_thresholds) {
     pct_mito <- qc_thresholds$pct_mito[which(qc_thresholds$Sample == sample_name)]
     intronic_ratio_min <- qc_thresholds$intronic_ratio_min[which(qc_thresholds$Sample == sample_name)]
     doublet_score <- qc_thresholds$scDblFinder_score[which(qc_thresholds$Sample == sample_name)]
-    
+
     # Informing the user about the filtering criteria
-    print(paste0("Filtering Sample ", sample_name, " with nFeature_RNA>", nFeature_RNA_min, 
-                 ", nFeature_RNA<", nFeature_RNA_max, ", percent_mito<", pct_mito, 
+    print(paste0("Filtering Sample ", sample_name, " with nFeature_RNA>", nFeature_RNA_min,
+                 ", nFeature_RNA<", nFeature_RNA_max, ", percent_mito<", pct_mito,
                  ", Velocyto intronic ratio>", intronic_ratio_min,
                  ", Doublet finder score <", doublet_score))
-    
+
     # Filter the merged Seurat object for the current sample
     sample_filtered <- subset(seurat_obj, cells = WhichCells(seurat_obj, expression = (sample == sample_name &
                                                                                          nFeature_RNA > nFeature_RNA_min &
@@ -161,48 +161,48 @@ QC_filtering <- function(seurat_obj, qc_thresholds) {
                                                                                          percent_mito < pct_mito &
                                                                                          velocyto_unsplicedratio > intronic_ratio_min &
                                                                                          scDblFinder_score < doublet_score )))
-    
+
     # Append the filtered sample to the list
     filtered_list[[sample_name]] <- sample_filtered
     gc(full=T)
   }
-  
+
   # Merge the filtered samples back into a single Seurat object
   filtered_seurat_obj <- merge(filtered_list[[1]], y = filtered_list[-1])
-  
+
   return(filtered_seurat_obj)
 }
 
 
-### Function for cluster markers with DESeq2 
-fun_deseq2_cellType <- function(cluster_name, counts, metadata, 
-                                smallestGroupSize = 20, use_vst = TRUE, 
-                                padj_threshold = 0.05, log2FC_threshold = 0.5, 
+### Function for cluster markers with DESeq2
+fun_deseq2_cellType <- function(cluster_name, counts, metadata,
+                                smallestGroupsize = 12, use_vst = TRUE,
+                                padj_threshold = 0.05, log2FC_threshold = 0.5,
                                 minExpression = 10, reference_group = NULL) {
-  
+
   if (!all(rownames(metadata) == colnames(counts))) {
     stop("Mismatch between metadata rownames and counts colnames")
   }
-  
+
   run_DE_for_pair <- function(cluster_name, reference_group, counts, metadata) {
     metadata$comparison <- as.character(metadata$cluster)
     metadata$comparison[metadata$cluster == cluster_name] <- cluster_name
     metadata$comparison[metadata$cluster == reference_group] <- reference_group
     metadata$comparison[!(metadata$comparison %in% c(cluster_name, reference_group))] <- "others"
-    
+
     metadata <- metadata[metadata$comparison %in% c(cluster_name, reference_group), ]
     counts <- counts[, rownames(metadata)]
     metadata$comparison <- factor(gsub("\\/", "_", metadata$comparison))
-    
+
     cat("Running DESeq2 for", cluster_name, "vs", reference_group, "\n")
-    
+
     dds <- DESeqDataSetFromMatrix(countData = counts, colData = metadata, design = ~comparison)
     dds$comparison <- relevel(dds$comparison, reference_group)
-    
+
     keep <- rowSums(counts(dds) >= minExpression) >= smallestGroupSize
     dds <- dds[keep, ]
     cat("Keeping", sum(keep), "genes after filtering.\n")
-    
+
     if (use_vst) {
       vsd <- vst(dds, blind = FALSE)
       zscores <- t(scale(t(assay(vsd))))
@@ -210,29 +210,29 @@ fun_deseq2_cellType <- function(cluster_name, counts, metadata,
       rld <- rlog(dds, blind = FALSE)
       zscores <- t(scale(t(assay(rld))))
     }
-    
+
     dds <- DESeq(dds, test = "Wald")
-    
+
     DE_result <- results(dds, contrast = c("comparison", cluster_name, reference_group)) %>%
       as.data.frame() %>%
       filter(padj < padj_threshold & abs(log2FoldChange) > log2FC_threshold) %>%
       arrange(desc(log2FoldChange)) %>%
       mutate(comparison = paste0(cluster_name, "_vs_", reference_group)) %>%
       rownames_to_column("gene")
-    
+
     # Annotate
     mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
-    genes <- getBM(filters = "hgnc_symbol", 
-                   attributes = c("hgnc_symbol", "gene_biotype"), 
-                   values = DE_result$gene, 
+    genes <- getBM(filters = "hgnc_symbol",
+                   attributes = c("hgnc_symbol", "gene_biotype"),
+                   values = DE_result$gene,
                    mart = mart)
     colnames(genes) <- c("gene", "gene_biotype")
     DE_result <- left_join(DE_result, genes, by = "gene")
     DE_result$gene_biotype[grep("^RP[SL]", DE_result$gene)] <- "ribosomal"
-    
+
     return(DE_result)
   }
-  
+
   if (!is.null(reference_group)) {
     # Run only one comparison — cluster_name vs reference_group
     return(run_DE_for_pair(cluster_name, reference_group, counts, metadata))
@@ -244,20 +244,20 @@ fun_deseq2_cellType <- function(cluster_name, counts, metadata,
       meta_copy$comparison <- "Rest"
       meta_copy$comparison[meta_copy$cluster == cl] <- cl
       meta_copy$comparison <- factor(meta_copy$comparison)
-      
+
       dds <- DESeqDataSetFromMatrix(countData = counts, colData = meta_copy, design = ~comparison)
       dds$comparison <- relevel(dds$comparison, "Rest")
-      
+
       keep <- rowSums(counts(dds) >= minExpression) >= smallestGroupSize
       dds <- dds[keep, ]
       cat("Running DESeq2 for", cl, "vs Rest. Keeping", sum(keep), "genes.\n")
-      
+
       if (use_vst) {
         vsd <- vst(dds, blind = FALSE)
       } else {
         rld <- rlog(dds, blind = FALSE)
       }
-      
+
       dds <- DESeq(dds, test = "Wald")
       res <- results(dds, contrast = c("comparison", cl, "Rest")) %>%
         as.data.frame() %>%
@@ -265,21 +265,21 @@ fun_deseq2_cellType <- function(cluster_name, counts, metadata,
         arrange(desc(log2FoldChange)) %>%
         mutate(comparison = paste0(cl, "_vs_Rest")) %>%
         rownames_to_column("gene")
-      
+
       if (nrow(res) > 0) {
         mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
-        genes <- getBM(filters = "hgnc_symbol", 
-                       attributes = c("hgnc_symbol", "gene_biotype"), 
-                       values = res$gene, 
+        genes <- getBM(filters = "hgnc_symbol",
+                       attributes = c("hgnc_symbol", "gene_biotype"),
+                       values = res$gene,
                        mart = mart)
         colnames(genes) <- c("gene", "gene_biotype")
         res <- left_join(res, genes, by = "gene")
         res$gene_biotype[grep("^RP[SL]", res$gene)] <- "ribosomal"
       }
-      
+
       return(res)
     })
-    
+
     names(result_list) <- all_clusters
     return(result_list)
   }
@@ -303,17 +303,17 @@ plot_ucell_vlnbox <- function(column_name,
                               colors = NULL,
                               theme_style = c("bw", "minimal")) {
   theme_style <- match.arg(theme_style)
-  
+
   # Group by sample and x_axis_column to calculate mean per sample within each group
   summary_data <- data %>%
     group_by(sample, .data[[x_axis_column]]) %>%
     summarise(sample_mean = mean(.data[[column_name]]), .groups = "drop")
-  
+
   # Set x-axis order if provided
   if (!is.null(cell_type_order)) {
     summary_data[[x_axis_column]] <- factor(summary_data[[x_axis_column]], levels = cell_type_order)
   }
-  
+
   # Default colors if not provided
   if (is.null(colors)) {
     if (x_axis_column == "group") {
@@ -322,7 +322,7 @@ plot_ucell_vlnbox <- function(column_name,
       colors <- c("#AD6279", "#78606D", "#A3B6CB", "#E4E4E4")
     }
   }
-  
+
   # Create the plot
   p <- ggplot(summary_data, aes(x = .data[[x_axis_column]], y = sample_mean, fill = .data[[x_axis_column]])) +
     geom_violin(trim = FALSE, scale = "width", alpha = 0.5) +
@@ -331,14 +331,14 @@ plot_ucell_vlnbox <- function(column_name,
     labs(x = NULL, y = NULL, title = column_name) +
     scale_fill_manual(values = colors) +
     NoLegend()
-  
+
   # Apply theme
   if (theme_style == "bw") {
     p <- p + theme_bw()
   } else if (theme_style == "minimal") {
     p <- p + theme_minimal()
   }
-  
+
   # Common theme settings
   p <- p + theme(
     axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 22),
@@ -349,7 +349,7 @@ plot_ucell_vlnbox <- function(column_name,
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank()
   )
-  
+
   return(p)
 }
 
@@ -361,27 +361,27 @@ process_sObj <- function(sObj, n_dims=NULL, n_resolution=NULL, default_assay="RN
   sObj <- FindVariableFeatures(sObj)
   sObj <- ScaleData(sObj)
   sObj <- RunPCA(sObj)
-  
+
   sObj <- FindNeighbors(sObj, dims = n_dims)
   sObj <- FindClusters(sObj, resolution = n_resolution)
   sObj <- RunUMAP(sObj, dims = n_dims, reduction = "pca", reduction.name = "umap.unintegrated")
-  
+
   sObj <- sObj %>% RunHarmony(integrate, plot_convergence = TRUE,  kmeans_init_nstart=20, kmeans_init_iter_max=150, lambda=lambda)
   sObj <- sObj %>% RunUMAP(reduction = "harmony", dims = n_dims, reduction.name='harmony.umap') %>%
     FindNeighbors(reduction = "harmony", dims = n_dims) %>%
     FindClusters(resolution = n_resolution) %>%
     identity()
-  
+
   return(sObj)
 }
 
 ### Function to calculate percentages
 calculate_cocl_pct <- function(file) {
   meta <- read.table(file, sep = "\t", header = TRUE)
-  
+
   filename <- sub("^.*?_metadata_|\\.txt$", "", file)
   filename <- sub("\\.txt$", "", filename)
-  
+
   summary_per_cluster <- meta %>%
     group_by(seurat_clusters, cls) %>%
     summarise(count = n(), .groups = "drop") %>%
@@ -395,7 +395,7 @@ calculate_cocl_pct <- function(file) {
     ) %>%
     select(seurat_clusters, fetal_pct, adult_ImN_pct, adult_ImN_like_pct, adult_MatN_pct) %>%
     mutate(combo = filename)
-  
+
   return(summary_per_cluster)
 }
 
@@ -409,7 +409,7 @@ filter_AF_MF <- function(summary_per_cluster, type = "AF") {
       AF_like_total = adult_ImN_like_pct + fetal_pct
     ) %>%
     ungroup()
-  
+
   if (type == "AF") {
     filtered <- summary_per_cluster %>%
       filter(max(AF_total, AF_like_total) > MF_total) %>%
@@ -419,53 +419,53 @@ filter_AF_MF <- function(summary_per_cluster, type = "AF") {
       filter(max(AF_total, AF_like_total) < MF_total) %>%
       filter(fetal_pct > 2 & adult_MatN_pct > 2)
   }
-  
-  return(filtered %>% select(seurat_clusters, fetal_pct, adult_ImN_pct, adult_MatN_pct, 
+
+  return(filtered %>% select(seurat_clusters, fetal_pct, adult_ImN_pct, adult_MatN_pct,
                              adult_ImN_like_pct, AF_total, MF_total, AF_like_total, combo))
 }
 
 ### Function to process UMAP with different parameters
 fun_umap_param <- function(SObj, theta, dims, res) {
-  
-  SObj <- SObj %>% 
-    RunHarmony(c("sample", "agegroup"), plot_convergence = TRUE,  
-               kmeans_init_nstart=20, kmeans_init_iter_max=150, 
+
+  SObj <- SObj %>%
+    RunHarmony(c("sample", "agegroup"), plot_convergence = TRUE,
+               kmeans_init_nstart=20, kmeans_init_iter_max=150,
                lambda = c(NULL, NULL), theta=c(theta, theta))
-  
+
   SObj <- SObj %>%
     RunUMAP(reduction = "harmony", dims = dims, reduction.name='harmony.umap') %>%
     FindNeighbors(reduction = "harmony", dims = dims) %>%
     FindClusters(resolution = res) %>%
     identity()
-  
-  barplots <- dittoSeq::dittoBarPlot(SObj, "sub_cell_type", group.by = "seurat_clusters", 
-                                     color.panel = c("#DAAC50", "#548FA7", "#A5C2B2", "lightgray")) + 
+
+  barplots <- dittoSeq::dittoBarPlot(SObj, "sub_cell_type", group.by = "seurat_clusters",
+                                     color.panel = c("#DAAC50", "#548FA7", "#A5C2B2", "lightgray")) +
     theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
                        panel.grid.minor = element_blank(), axis.text.x = element_text(size=14),
-                       axis.text.y = element_text(size=14), legend.text = element_text(size=14), 
+                       axis.text.y = element_text(size=14), legend.text = element_text(size=14),
                        legend.title = element_text(size=14), axis.title.x = element_text(size=14),
                        axis.title.y = element_text(size=14))
-  
+
   meta <- rownames_to_column(SObj@meta.data, var = "cell_id") %>%
     dplyr::select(cell_id, seurat_clusters, sub_cell_type)
-  
+
   meta_filename <- paste0("AF_subset_metadata_res", res, "_dim", max(dims), "_theta", theta, ".txt")
   write.table(meta, here("Data","AF_integration", meta_filename), sep="\t", quote = FALSE, row.names = FALSE)
 }
 
 # fix the error with dynamicplot
-DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL, 
-                        slot = "counts", assay = NULL, family = NULL, exp_method = c("log1p", 
-                                                                                     "raw", "zscore", "fc", "log2fc"), lib_normalize = identical(slot, 
-                                                                                                                                                 "counts"), libsize = NULL, compare_lineages = TRUE, 
-                        compare_features = FALSE, add_line = TRUE, add_interval = TRUE, 
-                        line.size = 1, line_palette = "Dark2", line_palcolor = NULL, 
-                        add_point = TRUE, pt.size = 1, point_palette = "Paired", 
-                        point_palcolor = NULL, add_rug = TRUE, flip = FALSE, reverse = FALSE, 
-                        x_order = c("value", "rank"), aspect.ratio = NULL, legend.position = "right", 
-                        legend.direction = "vertical", theme_use = "theme_scp", 
-                        theme_args = list(), combine = TRUE, nrow = NULL, ncol = NULL, 
-                        byrow = TRUE, seed = 11) 
+DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
+                        slot = "counts", assay = NULL, family = NULL, exp_method = c("log1p",
+                                                                                     "raw", "zscore", "fc", "log2fc"), lib_normalize = identical(slot,
+                                                                                                                                                 "counts"), libsize = NULL, compare_lineages = TRUE,
+                        compare_features = FALSE, add_line = TRUE, add_interval = TRUE,
+                        line.size = 1, line_palette = "Dark2", line_palcolor = NULL,
+                        add_point = TRUE, pt.size = 1, point_palette = "Paired",
+                        point_palcolor = NULL, add_rug = TRUE, flip = FALSE, reverse = FALSE,
+                        x_order = c("value", "rank"), aspect.ratio = NULL, legend.position = "right",
+                        legend.direction = "vertical", theme_use = "theme_scp",
+                        theme_args = list(), combine = TRUE, nrow = NULL, ncol = NULL,
+                        byrow = TRUE, seed = 11)
 {
   set.seed(seed)
   check_R("MatrixGenerics")
@@ -473,11 +473,11 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
   if (!is.null(group.by) && !group.by %in% colnames(srt@meta.data)) {
     stop(group.by, " is not in the meta.data of srt object.")
   }
-  data_nm <- c(ifelse(isTRUE(lib_normalize), "normalized", 
+  data_nm <- c(ifelse(isTRUE(lib_normalize), "normalized",
                       ""), slot)
   data_nm <- paste(data_nm[data_nm != ""], collapse = " ")
   if (length(exp_method) == 1 && is.function(exp_method)) {
-    exp_name <- paste0(as.character(x = formals()$exp_method), 
+    exp_name <- paste0(as.character(x = formals()$exp_method),
                        "(", data_nm, ")")
   }
   else {
@@ -500,56 +500,56 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
     features_exist <- c()
     raw_matrix <- NULL
     if (paste0("DynamicFeatures_", l) %in% names(srt@tools)) {
-      raw_matrix <- srt@tools[[paste0("DynamicFeatures_", 
+      raw_matrix <- srt@tools[[paste0("DynamicFeatures_",
                                       l)]][["raw_matrix"]][, -1]
-      fitted_matrix <- srt@tools[[paste0("DynamicFeatures_", 
+      fitted_matrix <- srt@tools[[paste0("DynamicFeatures_",
                                          l)]][["fitted_matrix"]][, -1]
-      upr_matrix <- srt@tools[[paste0("DynamicFeatures_", 
+      upr_matrix <- srt@tools[[paste0("DynamicFeatures_",
                                       l)]][["upr_matrix"]][, -1]
-      lwr_matrix <- srt@tools[[paste0("DynamicFeatures_", 
+      lwr_matrix <- srt@tools[[paste0("DynamicFeatures_",
                                       l)]][["lwr_matrix"]][, -1]
       features_exist <- colnames(raw_matrix)
     }
     feature_calcu <- features[!features %in% features_exist]
     if (length(feature_calcu) > 0) {
-      srt_tmp <- RunDynamicFeatures(srt, lineages = l, 
-                                    features = feature_calcu, assay = assay, slot = slot, 
+      srt_tmp <- RunDynamicFeatures(srt, lineages = l,
+                                    features = feature_calcu, assay = assay, slot = slot,
                                     family = family, libsize = libsize)
       if (is.null(raw_matrix)) {
-        raw_matrix <- fitted_matrix <- upr_matrix <- lwr_matrix <- matrix(NA, 
-                                                                          nrow = nrow(srt_tmp@tools[[paste0("DynamicFeatures_", 
+        raw_matrix <- fitted_matrix <- upr_matrix <- lwr_matrix <- matrix(NA,
+                                                                          nrow = nrow(srt_tmp@tools[[paste0("DynamicFeatures_",
                                                                                                             l)]][["raw_matrix"]]), ncol = 0)
       }
-      raw_matrix <- cbind(raw_matrix, srt_tmp@tools[[paste0("DynamicFeatures_", 
+      raw_matrix <- cbind(raw_matrix, srt_tmp@tools[[paste0("DynamicFeatures_",
                                                             l)]][["raw_matrix"]][, feature_calcu, drop = FALSE])
-      fitted_matrix <- cbind(fitted_matrix, srt_tmp@tools[[paste0("DynamicFeatures_", 
+      fitted_matrix <- cbind(fitted_matrix, srt_tmp@tools[[paste0("DynamicFeatures_",
                                                                   l)]][["fitted_matrix"]][, feature_calcu, drop = FALSE])
-      upr_matrix <- cbind(upr_matrix, srt_tmp@tools[[paste0("DynamicFeatures_", 
+      upr_matrix <- cbind(upr_matrix, srt_tmp@tools[[paste0("DynamicFeatures_",
                                                             l)]][["upr_matrix"]][, feature_calcu, drop = FALSE])
-      lwr_matrix <- cbind(lwr_matrix, srt_tmp@tools[[paste0("DynamicFeatures_", 
+      lwr_matrix <- cbind(lwr_matrix, srt_tmp@tools[[paste0("DynamicFeatures_",
                                                             l)]][["lwr_matrix"]][, feature_calcu, drop = FALSE])
     }
-    raw_matrix_list[[l]] <- as_matrix(raw_matrix[, features, 
+    raw_matrix_list[[l]] <- as_matrix(raw_matrix[, features,
                                                  drop = FALSE])
-    fitted_matrix_list[[l]] <- as_matrix(fitted_matrix[, 
+    fitted_matrix_list[[l]] <- as_matrix(fitted_matrix[,
                                                        features, drop = FALSE])
-    upr_matrix_list[[l]] <- as_matrix(upr_matrix[, features, 
+    upr_matrix_list[[l]] <- as_matrix(upr_matrix[, features,
                                                  drop = FALSE])
-    lwr_matrix_list[[l]] <- as_matrix(lwr_matrix[, features, 
+    lwr_matrix_list[[l]] <- as_matrix(lwr_matrix[, features,
                                                  drop = FALSE])
     cell_union <- unique(c(cell_union, rownames(raw_matrix)))
   }
-  x_assign <- rowMeans(srt@meta.data[cell_union, lineages, 
+  x_assign <- rowMeans(srt@meta.data[cell_union, lineages,
                                      drop = FALSE], na.rm = TRUE)
-  cell_metadata <- cbind.data.frame(data.frame(row.names = cell_union), 
-                                    x_assign = x_assign, srt@meta.data[cell_union, lineages, 
+  cell_metadata <- cbind.data.frame(data.frame(row.names = cell_union),
+                                    x_assign = x_assign, srt@meta.data[cell_union, lineages,
                                                                        drop = FALSE])
   cell_order_list <- list()
   for (l in lineages) {
     cell_metadata_sub <- na.omit(cell_metadata[, l, drop = FALSE])
-    cell_metadata_sub <- cell_metadata_sub[order(cell_metadata_sub[[l]], 
+    cell_metadata_sub <- cell_metadata_sub[order(cell_metadata_sub[[l]],
                                                  decreasing = FALSE), , drop = FALSE]
-    cell_order_list[[l]] <- paste0(rownames(cell_metadata_sub), 
+    cell_order_list[[l]] <- paste0(rownames(cell_metadata_sub),
                                    l)
   }
   df_list <- list()
@@ -559,7 +559,7 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
     fitted_matrix <- fitted_matrix_list[[l]]
     upr_matrix <- upr_matrix_list[[l]]
     lwr_matrix <- lwr_matrix_list[[l]]
-    if (isTRUE(lib_normalize) && min(raw_matrix[, gene], 
+    if (isTRUE(lib_normalize) && min(raw_matrix[, gene],
                                      na.rm = TRUE) >= 0) {
       if (!is.null(libsize)) {
         libsize_use <- libsize
@@ -569,11 +569,11 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
         isfloat <- any(libsize_use%%1 != 0, na.rm = TRUE)
         if (isTRUE(isfloat)) {
           libsize_use <- rep(1, length(libsize_use))
-          warning("The values in the 'counts' slot are non-integer. Set the library size to 1.", 
+          warning("The values in the 'counts' slot are non-integer. Set the library size to 1.",
                   immediate. = TRUE)
         }
       }
-      raw_matrix[, gene] <- raw_matrix[, gene, drop = FALSE]/libsize_use * 
+      raw_matrix[, gene] <- raw_matrix[, gene, drop = FALSE]/libsize_use *
         median(Y_libsize)
     }
     if (is.function(exp_method)) {
@@ -591,13 +591,13 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
     else if (exp_method == "zscore") {
       center <- colMeans(raw_matrix)
       sd <- MatrixGenerics::colSds(raw_matrix)
-      raw_matrix <- scale(raw_matrix, center = center, 
+      raw_matrix <- scale(raw_matrix, center = center,
                           scale = sd)
-      fitted_matrix <- scale(fitted_matrix, center = center, 
+      fitted_matrix <- scale(fitted_matrix, center = center,
                              scale = sd)
-      upr_matrix <- scale(upr_matrix, center = center, 
+      upr_matrix <- scale(upr_matrix, center = center,
                           scale = sd)
-      lwr_matrix <- scale(lwr_matrix, center = center, 
+      lwr_matrix <- scale(lwr_matrix, center = center,
                           scale = sd)
     }
     else if (exp_method == "fc") {
@@ -620,45 +620,45 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
       upr_matrix <- log1p(upr_matrix)
       lwr_matrix <- log1p(lwr_matrix)
     }
-    raw_matrix[is.infinite(raw_matrix)] <- max(abs(raw_matrix[!is.infinite(raw_matrix)]), 
-                                               na.rm = TRUE) * ifelse(raw_matrix[is.infinite(raw_matrix)] > 
+    raw_matrix[is.infinite(raw_matrix)] <- max(abs(raw_matrix[!is.infinite(raw_matrix)]),
+                                               na.rm = TRUE) * ifelse(raw_matrix[is.infinite(raw_matrix)] >
                                                                         0, 1, -1)
-    fitted_matrix[is.infinite(fitted_matrix)] <- max(abs(fitted_matrix[!is.infinite(fitted_matrix)])) * 
-      ifelse(fitted_matrix[is.infinite(fitted_matrix)] > 
+    fitted_matrix[is.infinite(fitted_matrix)] <- max(abs(fitted_matrix[!is.infinite(fitted_matrix)])) *
+      ifelse(fitted_matrix[is.infinite(fitted_matrix)] >
                0, 1, -1)
-    upr_matrix[is.infinite(upr_matrix)] <- max(abs(upr_matrix[!is.infinite(upr_matrix)]), 
-                                               na.rm = TRUE) * ifelse(upr_matrix[is.infinite(upr_matrix)] > 
+    upr_matrix[is.infinite(upr_matrix)] <- max(abs(upr_matrix[!is.infinite(upr_matrix)]),
+                                               na.rm = TRUE) * ifelse(upr_matrix[is.infinite(upr_matrix)] >
                                                                         0, 1, -1)
-    lwr_matrix[is.infinite(lwr_matrix)] <- max(abs(lwr_matrix[!is.infinite(lwr_matrix)]), 
-                                               na.rm = TRUE) * ifelse(lwr_matrix[is.infinite(lwr_matrix)] > 
+    lwr_matrix[is.infinite(lwr_matrix)] <- max(abs(lwr_matrix[!is.infinite(lwr_matrix)]),
+                                               na.rm = TRUE) * ifelse(lwr_matrix[is.infinite(lwr_matrix)] >
                                                                         0, 1, -1)
-    raw <- as.data.frame(cbind(cell_metadata[rownames(raw_matrix), 
+    raw <- as.data.frame(cbind(cell_metadata[rownames(raw_matrix),
                                              c(l, "x_assign")], raw_matrix))
     colnames(raw)[1] <- "Pseudotime"
     raw[["Cell"]] <- rownames(raw)
     raw[["Value"]] <- "raw"
-    raw <- reshape2::melt(raw, id.vars = c("Cell", "Pseudotime", "x_assign", 
+    raw <- reshape2::melt(raw, id.vars = c("Cell", "Pseudotime", "x_assign",
                                  "Value"), value.name = "exp", variable.name = "Features")
-    fitted <- as.data.frame(cbind(cell_metadata[rownames(fitted_matrix), 
+    fitted <- as.data.frame(cbind(cell_metadata[rownames(fitted_matrix),
                                                 c(l, "x_assign")], fitted_matrix))
     colnames(fitted)[1] <- "Pseudotime"
     fitted[["Cell"]] <- rownames(fitted)
     fitted[["Value"]] <- "fitted"
-    fitted <- reshape2::melt(fitted, id.vars = c("Cell", "Pseudotime", 
+    fitted <- reshape2::melt(fitted, id.vars = c("Cell", "Pseudotime",
                                        "x_assign", "Value"), value.name = "exp", variable.name = "Features")
-    upr <- as.data.frame(cbind(cell_metadata[rownames(upr_matrix), 
+    upr <- as.data.frame(cbind(cell_metadata[rownames(upr_matrix),
                                              c(l, "x_assign")], upr_matrix))
     colnames(upr)[1] <- "Pseudotime"
     upr[["Cell"]] <- rownames(upr)
     upr[["Value"]] <- "upr"
-    upr <- reshape2::melt(upr, id.vars = c("Cell", "Pseudotime", "x_assign", 
+    upr <- reshape2::melt(upr, id.vars = c("Cell", "Pseudotime", "x_assign",
                                  "Value"), value.name = "exp", variable.name = "Features")
-    lwr <- as.data.frame(cbind(cell_metadata[rownames(lwr_matrix), 
+    lwr <- as.data.frame(cbind(cell_metadata[rownames(lwr_matrix),
                                              c(l, "x_assign")], lwr_matrix))
     colnames(lwr)[1] <- "Pseudotime"
     lwr[["Cell"]] <- rownames(lwr)
     lwr[["Value"]] <- "lwr"
-    lwr <- reshape2::melt(lwr, id.vars = c("Cell", "Pseudotime", "x_assign", 
+    lwr <- reshape2::melt(lwr, id.vars = c("Cell", "Pseudotime", "x_assign",
                                  "Value"), value.name = "exp", variable.name = "Features")
     raw[["upr"]] <- NA
     raw[["lwr"]] <- NA
@@ -671,15 +671,15 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
   df_all <- do.call(rbind, df_list)
   rownames(df_all) <- NULL
   if (!is.null(group.by)) {
-    cell_group <- srt@meta.data[df_all[["Cell"]], group.by, 
+    cell_group <- srt@meta.data[df_all[["Cell"]], group.by,
                                 drop = FALSE]
     if (!is.factor(cell_group[, group.by])) {
-      cell_group[, group.by] <- factor(cell_group[, group.by], 
+      cell_group[, group.by] <- factor(cell_group[, group.by],
                                        levels = unique(cell_group[, group.by]))
     }
     df_all <- cbind(df_all, cell_group)
   }
-  df_all[["LineagesFeatures"]] <- paste(df_all[["Lineages"]], 
+  df_all[["LineagesFeatures"]] <- paste(df_all[["Lineages"]],
                                         df_all[["Features"]], sep = "-")
   if (!is.null(cells)) {
     df_all <- df_all[df_all[["Cell"]] %in% cells, , drop = FALSE]
@@ -722,13 +722,13 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
   }
   for (l in lineages_use) {
     for (f in features_use) {
-      df <- subset(df_all, df_all[["Lineages"]] %in% l & 
+      df <- subset(df_all, df_all[["Lineages"]] %in% l &
                      df_all[["Features"]] %in% f)
       if (x_order == "rank") {
         df[, "x_assign"] <- rank(df[, "x_assign"])
         df[, "Pseudotime"] <- rank(df[, "Pseudotime"])
       }
-      df_point <- unique(df[df[["Value"]] == "raw", c("Cell", 
+      df_point <- unique(df[df[["Value"]] == "raw", c("Cell",
                                                       "x_assign", "exp", group.by)])
       if (isTRUE(compare_features)) {
         raw_point <- NULL
@@ -736,21 +736,21 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
       else {
         if (isTRUE(add_point)) {
           if (is.null(group.by)) {
-            raw_point <- geom_point(data = df_point, 
-                                    mapping = aes(x = .data[["x_assign"]], 
-                                                  y = .data[["exp"]]), size = pt.size, 
+            raw_point <- geom_point(data = df_point,
+                                    mapping = aes(x = .data[["x_assign"]],
+                                                  y = .data[["exp"]]), size = pt.size,
                                     alpha = 0.8)
           }
           else {
-            raw_point <- list(geom_point(data = df_point, 
-                                         mapping = aes(x = .data[["x_assign"]], 
-                                                       y = .data[["exp"]], color = .data[[group.by]]), 
-                                         size = pt.size, alpha = 0.8), scale_color_manual(values = palette_scp(df[[group.by]], 
-                                                                                                               palette = point_palette, palcolor = point_palcolor)), 
-                              scale_fill_manual(values = palette_scp(df[[group.by]], 
-                                                                     palette = point_palette, palcolor = point_palcolor), 
-                                                guide = guide_legend(override.aes = list(alpha = 1, 
-                                                                                         size = 3), order = 1)), new_scale_color(), 
+            raw_point <- list(geom_point(data = df_point,
+                                         mapping = aes(x = .data[["x_assign"]],
+                                                       y = .data[["exp"]], color = .data[[group.by]]),
+                                         size = pt.size, alpha = 0.8), scale_color_manual(values = palette_scp(df[[group.by]],
+                                                                                                               palette = point_palette, palcolor = point_palcolor)),
+                              scale_fill_manual(values = palette_scp(df[[group.by]],
+                                                                     palette = point_palette, palcolor = point_palcolor),
+                                                guide = guide_legend(override.aes = list(alpha = 1,
+                                                                                         size = 3), order = 1)), new_scale_color(),
                               new_scale_fill())
           }
         }
@@ -760,15 +760,15 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
       }
       if (isTRUE(add_rug)) {
         if (is.null(group.by)) {
-          rug <- list(geom_rug(data = df_point, mapping = aes(x = .data[["x_assign"]]), 
+          rug <- list(geom_rug(data = df_point, mapping = aes(x = .data[["x_assign"]]),
                                alpha = 1, length = unit(0.05, "npc"), show.legend = FALSE))
         }
         else {
-          rug <- list(geom_rug(data = df_point, mapping = aes(x = .data[["x_assign"]], 
-                                                              color = .data[[group.by]]), alpha = 1, length = unit(0.05, 
-                                                                                                                   "npc"), show.legend = isTRUE(compare_features)), 
-                      scale_color_manual(values = palette_scp(df[[group.by]], 
-                                                              palette = point_palette, palcolor = point_palcolor)), 
+          rug <- list(geom_rug(data = df_point, mapping = aes(x = .data[["x_assign"]],
+                                                              color = .data[[group.by]]), alpha = 1, length = unit(0.05,
+                                                                                                                   "npc"), show.legend = isTRUE(compare_features)),
+                      scale_color_manual(values = palette_scp(df[[group.by]],
+                                                              palette = point_palette, palcolor = point_palcolor)),
                       new_scale_color())
         }
       }
@@ -776,39 +776,39 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
         rug <- NULL
       }
       if (isTRUE(add_interval)) {
-        interval <- list(geom_ribbon(data = subset(df, 
-                                                   df[["Value"]] == "fitted"), mapping = aes(x = .data[["Pseudotime"]], 
-                                                                                             y = .data[["exp"]], ymin = .data[["lwr"]], 
-                                                                                             ymax = .data[["upr"]], fill = .data[[fill_by]], 
-                                                                                             group = .data[["LineagesFeatures"]]), alpha = 0.4, 
-                                     color = "grey90"), scale_fill_manual(values = palette_scp(df[[fill_by]], 
-                                                                                               palette = line_palette, palcolor = line_palcolor), 
-                                                                          guide = if (fill_by == "Features" || lineages_guide || 
-                                                                                      length(l) == 1) "none" else guide_legend()), 
+        interval <- list(geom_ribbon(data = subset(df,
+                                                   df[["Value"]] == "fitted"), mapping = aes(x = .data[["Pseudotime"]],
+                                                                                             y = .data[["exp"]], ymin = .data[["lwr"]],
+                                                                                             ymax = .data[["upr"]], fill = .data[[fill_by]],
+                                                                                             group = .data[["LineagesFeatures"]]), alpha = 0.4,
+                                     color = "grey90"), scale_fill_manual(values = palette_scp(df[[fill_by]],
+                                                                                               palette = line_palette, palcolor = line_palcolor),
+                                                                          guide = if (fill_by == "Features" || lineages_guide ||
+                                                                                      length(l) == 1) "none" else guide_legend()),
                          new_scale_fill())
       }
       else {
         interval <- NULL
       }
       if (isTRUE(compare_features)) {
-        line <- list(geom_line(data = subset(df, df[["Value"]] == 
-                                               "fitted"), mapping = aes(x = .data[["Pseudotime"]], 
-                                                                        y = .data[["exp"]], color = .data[["Features"]], 
-                                                                        group = .data[["LineagesFeatures"]]), linewidth = line.size, 
-                               alpha = 0.8), scale_color_manual(values = palette_scp(df[["Features"]], 
-                                                                                     palette = line_palette, palcolor = line_palcolor), 
-                                                                guide = if (features_guide) guide_legend(override.aes = list(alpha = 1, 
+        line <- list(geom_line(data = subset(df, df[["Value"]] ==
+                                               "fitted"), mapping = aes(x = .data[["Pseudotime"]],
+                                                                        y = .data[["exp"]], color = .data[["Features"]],
+                                                                        group = .data[["LineagesFeatures"]]), linewidth = line.size,
+                               alpha = 0.8), scale_color_manual(values = palette_scp(df[["Features"]],
+                                                                                     palette = line_palette, palcolor = line_palcolor),
+                                                                guide = if (features_guide) guide_legend(override.aes = list(alpha = 1,
                                                                                                                              size = 2), order = 2) else "none"), new_scale_color())
       }
       else {
         if (isTRUE(add_line)) {
-          line <- list(geom_line(data = subset(df, df[["Value"]] == 
-                                                 "fitted"), mapping = aes(x = .data[["Pseudotime"]], 
-                                                                          y = .data[["exp"]], color = .data[["Lineages"]], 
-                                                                          group = .data[["LineagesFeatures"]]), linewidth = line.size, 
-                                 alpha = 0.8), scale_color_manual(values = palette_scp(df[["Lineages"]], 
-                                                                                       palette = line_palette, palcolor = line_palcolor), 
-                                                                  guide = if (lineages_guide) guide_legend(override.aes = list(alpha = 1, 
+          line <- list(geom_line(data = subset(df, df[["Value"]] ==
+                                                 "fitted"), mapping = aes(x = .data[["Pseudotime"]],
+                                                                          y = .data[["exp"]], color = .data[["Lineages"]],
+                                                                          group = .data[["LineagesFeatures"]]), linewidth = line.size,
+                                 alpha = 0.8), scale_color_manual(values = palette_scp(df[["Lineages"]],
+                                                                                       palette = line_palette, palcolor = line_palcolor),
+                                                                  guide = if (lineages_guide) guide_legend(override.aes = list(alpha = 1,
                                                                                                                                size = 2), order = 2) else "none"), new_scale_color())
         }
         else {
@@ -816,15 +816,15 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
         }
       }
       x_trans <- ifelse(flip, "reverse", "identity")
-      x_trans <- ifelse(reverse, setdiff(c("reverse", 
+      x_trans <- ifelse(reverse, setdiff(c("reverse",
                                            "identity"), x_trans), x_trans)
-      p <- ggplot() + scale_x_continuous(trans = x_trans, 
-                                         expand = expansion(c(0, 0))) + scale_y_continuous(expand = expansion(c(0.1, 
-                                                                                                                0.05))) + raw_point + rug + interval + list(line[[1]], line[[2]]) + 
-        labs(x = ifelse(x_order == "rank", "Pseudotime(rank)", 
-                        "Pseudotime"), y = exp_name) + facet_grid(formula(formula), 
-                                                                  scales = "free") + do.call(theme_use, theme_args) + 
-        theme(aspect.ratio = aspect.ratio, legend.position = legend.position, 
+      p <- ggplot() + scale_x_continuous(trans = x_trans,
+                                         expand = expansion(c(0, 0))) + scale_y_continuous(expand = expansion(c(0.1,
+                                                                                                                0.05))) + raw_point + rug + interval + list(line[[1]], line[[2]]) +
+        labs(x = ifelse(x_order == "rank", "Pseudotime(rank)",
+                        "Pseudotime"), y = exp_name) + facet_grid(formula(formula),
+                                                                  scales = "free") + do.call(theme_use, theme_args) +
+        theme(aspect.ratio = aspect.ratio, legend.position = legend.position,
               legend.direction = legend.direction)
       if (isTRUE(flip)) {
         p <- p + coord_flip()
@@ -832,7 +832,7 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
       if (is.null(legend)) {
         legend <- get_plot_component(p, 'guide-box-right', return_all = TRUE)
       }
-      plist[[paste(paste0(l, collapse = "_"), paste0(f, 
+      plist[[paste(paste0(l, collapse = "_"), paste0(f,
                                                      collapse = "_"), sep = ".")]] <- p + theme(legend.position = "none")
     }
   }
@@ -843,7 +843,7 @@ DynamicPlot2<-function (srt, lineages, features, group.by = NULL, cells = NULL,
     } else {
       plot <- plist[[1]]
     }
-    
+
     if (legend.position != "none") {
       legend <- get_plot_component(p, 'guide-box-right', return_all = TRUE)
       gtable <- as_grob(plot)
@@ -862,28 +862,28 @@ assign("DynamicPlot", DynamicPlot2, envir = asNamespace("SCP"))
 genebarplot <- function(gene_symbol) {
   rpkm <- getRPKM(rse_gene)
   gene_data <- rowRanges(rse_gene)
-  
+
   # Find the index for the specified gene
   gene_index <- which(gene_data$Symbol == gene_symbol)
-  
+
   if (length(gene_index) == 0) {
     warning(paste("Gene", gene_symbol, "not found in the dataset."))
     return(NULL)  # Return NULL if the gene is not found
   }
-  
+
   plot_data <- data.frame(
     Day = colData(rse_gene)$DAY,
     rpkm = rpkm[gene_index, ],
     log2rpkm = log2(rpkm[gene_index, ] +1)
   )
-  
+
   plot_data$Day <- paste0("D", plot_data$Day)
-  
+
   plot_data <- plot_data %>%
     mutate(Day_numeric = as.numeric(gsub("D", "", Day))) %>%
     arrange(Day_numeric) %>%
     mutate(Day = factor(Day, levels = unique(Day)))
-  
+
   # Calculate summary statistics: mean and standard error
   summary_stats <- plot_data %>%
     group_by(Day) %>%
@@ -891,28 +891,28 @@ genebarplot <- function(gene_symbol) {
       mean_log2rpkm = mean(log2rpkm, na.rm = TRUE),
       se_log2rpkm = sd(log2rpkm, na.rm = TRUE) / sqrt(n())
     )
-  
+
   # Ensure all values are finite before plotting
   plot_data <- plot_data %>% filter(is.finite(log2rpkm))
   summary_stats <- summary_stats %>% filter(is.finite(mean_log2rpkm))
-  
+
   # Create the plot
   p <- ggplot(summary_stats, aes(x = Day, y = mean_log2rpkm)) +
     geom_bar(stat = "identity", fill = "#A0A0A4", color = "black") +
     geom_errorbar(aes(ymin = mean_log2rpkm - se_log2rpkm, ymax = mean_log2rpkm + se_log2rpkm), width = 0.2, color = "black") +
     geom_point(data = plot_data, aes(x = Day, y = log2rpkm), position = position_jitter(width = 0.1), size = 2, alpha = 0.8) +
     labs(title = paste("Expression of", gene_symbol, "over Days in Vitro"),
-         x = "Days in Vitro", 
+         x = "Days in Vitro",
          y = "Expression (log2(RPKM + 1))") +
     theme_classic() +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 22), 
-          axis.text.y = element_text(size = 22), 
-          axis.title.x = element_text(size = 20, face = "bold"),
-          axis.title.y = element_text(size = 20, face = "bold"),
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 22),
+          axis.text.y = element_text(size = 22),
+          axis.title.x = element_text(size = 12, face = "bold"),
+          axis.title.y = element_text(size = 12, face = "bold"),
           plot.title = element_text(size = 24, face = "bold"),
           panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) +
     coord_cartesian(ylim = c(0, 10))
-  
+
   print(p)
 }
 
@@ -930,31 +930,31 @@ fun_deseq2_groups <- function(
     log2FC_threshold = 0,
     minExpression = 10
 ) {
-  
+
   clusters <- unique(metadata_all$cellType)
   mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
   DE_result_list <- list()
-  
+
   for (cluster in clusters) {
     for (pair in pairs) {
       target <- pair[1]
       reference <- pair[2]
-      
+
       metadata <- merge(metadata_all, metadata_info, by = c("sample")) %>%
         filter(group %in% c(target, reference)) %>%
         filter(cellType == cluster)
       rownames(metadata) <- metadata$sample
-      
+
       cluster_counts <- aggregated_counts_split[[cluster]][, colnames(aggregated_counts_split[[cluster]]) %in% rownames(metadata)]
       cluster_metadata <- metadata[match(colnames(cluster_counts), rownames(metadata)), ]
-      
+
       cluster_metadata <- cluster_metadata %>%
         group_by(Run) %>%
         mutate(run_count = n()) %>%
         ungroup()
-      
+
       single_run_samples <- cluster_metadata %>% filter(run_count == 1)
-      
+
       if (nrow(single_run_samples) > 1) {
         message("These were single Run samples, they will be grouped together.")
         print(single_run_samples)
@@ -971,66 +971,66 @@ fun_deseq2_groups <- function(
         cluster_metadata <- cluster_metadata %>%
           mutate(Run = ifelse(run_count == 1, next_run, Run))
       }
-      
+
       cluster_metadata <- cluster_metadata %>%
         dplyr::select(-run_count) %>%
         column_to_rownames("sample")
-      
+
       if (!all(rownames(cluster_metadata) == colnames(cluster_counts))) stop("Sample mismatch!")
-      
+
       message("Running DESeq2 for ", cluster, " ", target, "_vs_", reference, " correcting for Sex and Run")
       cluster_metadata$group <- factor(cluster_metadata$group)
       cluster_metadata$Sex <- factor(cluster_metadata$Sex)
       cluster_metadata$Run <- factor(cluster_metadata$Run)
-      
+
       dds <- DESeqDataSetFromMatrix(cluster_counts,
                                     colData = cluster_metadata,
                                     design = ~0 + Sex + Run + group)
-      
+
       keep <- rowSums(counts(dds) >= minExpression) >= smallestGroupSize
       dds <- dds[keep,]
-      
+
       dds$condition <- factor(cluster_metadata$group)
-      
+
       if (use_rlog) {
         rld <- rlog(dds, blind = FALSE)
       } else {
         vsd <- vst(dds, blind = FALSE)
       }
-      
+
       covariates <- model.matrix(~cluster_metadata$Sex + cluster_metadata$Run)
       covariates <- covariates[,-1]
       mat <- assay(rld)
       mm <- model.matrix(~group, colData(rld))
       mat <- limma::removeBatchEffect(mat, covariates = covariates, design = mm)
       assay(rld) <- mat
-      
+
       if (save_corrected_rlog) {
         saveRDS(rld, here("Data", paste0("rlog_corrected_", cluster, "_", target, "_vs_", reference, ".RDS")))
       }
-      
+
       dds <- DESeq(dds, test = "Wald")
       DE_result <- as.data.frame(results(dds, contrast = c("group", target, reference))) %>%
         filter(padj < padj_threshold) %>%
         arrange(desc(log2FoldChange)) %>%
         mutate(group = paste0(cluster, "-", target, "_vs_", reference)) %>%
         rownames_to_column('gene')
-      
+
       if (nrow(DE_result) > 2) {
         genes <- getBM(filters = 'hgnc_symbol', attributes = c('hgnc_symbol', 'gene_biotype'), values = DE_result$gene, mart = mart)
         colnames(genes) <- c('gene', 'gene_biotype')
         DE_result <- left_join(DE_result, genes, by = "gene") %>% arrange(desc(log2FoldChange))
         DE_result$gene_biotype[grep("^RP[SL]", DE_result$gene)] <- "ribosomal"
-        
+
         subset_data <- DE_result[, !(colnames(DE_result) %in% c("gene_biotype"))]
         duplicated_rows <- duplicated(subset_data) | duplicated(subset_data, fromLast = TRUE)
         DE_result <- DE_result[!duplicated(subset_data), ]
       }
-      
+
       DE_result_list[[paste0(cluster, "-", target, "_vs_", reference)]] <- DE_result
     }
   }
-  
+
   all_columns <- unique(unlist(lapply(DE_result_list, colnames)))
   df_list_fixed <- lapply(DE_result_list, function(df) {
     if (nrow(df) == 0) {
@@ -1042,17 +1042,17 @@ fun_deseq2_groups <- function(
     }
     return(df)
   })
-  
+
   df_list_fixed <- df_list_fixed[sapply(df_list_fixed, nrow) > 0]
   DE_result_all <- do.call(rbind, df_list_fixed)
-  
+
   result_summary <- DE_result_all %>%
     group_by(group) %>%
     summarize(
       num_genes_above_0 = sum(log2FoldChange > 0),
       num_genes_below_0 = sum(log2FoldChange < 0)
     )
-  
+
   return(list(results = DE_result_all, summary = result_summary))
 }
 
@@ -1101,17 +1101,17 @@ filter_interactions <- function(df) {
     group_by(group) %>%
     summarise(id_cluster = list(id_cluster)) %>%
     deframe()
-  
+
   unique_SAD <- setdiff(interactions_by_group$SAD, c(interactions_by_group$MAD, interactions_by_group$CTRL, interactions_by_group$RES))
   unique_MAD <- setdiff(interactions_by_group$MAD, c(interactions_by_group$SAD, interactions_by_group$CTRL, interactions_by_group$RES))
   unique_CTRL <- setdiff(interactions_by_group$CTRL, c(interactions_by_group$SAD, interactions_by_group$MAD, interactions_by_group$RES))
   unique_RES <- setdiff(interactions_by_group$RES, c(interactions_by_group$SAD, interactions_by_group$MAD, interactions_by_group$CTRL))
-  
+
   shared_SAD_MAD <- intersect(interactions_by_group$SAD, interactions_by_group$MAD)
   shared_RES_MAD <- intersect(interactions_by_group$RES, interactions_by_group$MAD)
   shared_CTRL_RES <- intersect(interactions_by_group$CTRL, interactions_by_group$RES)
   shared_RES_MAD_CTRL <- Reduce(intersect, list(interactions_by_group$RES, interactions_by_group$MAD, interactions_by_group$CTRL))
-  
+
   filtered_df_result <- bind_rows(
     df %>% filter(group == "SAD" & id_cluster %in% unique_SAD) %>% mutate(annotation = "SAD_unique"),
     df %>% filter(group == "MAD" & id_cluster %in% unique_MAD) %>% mutate(annotation = "MAD_unique"),
@@ -1122,6 +1122,6 @@ filter_interactions <- function(df) {
     df %>% filter(group %in% c("CTRL", "RES") & id_cluster %in% shared_CTRL_RES) %>% mutate(annotation = "CTRL_RES_shared"),
     df %>% filter(group %in% c("CTRL", "RES", "MAD") & id_cluster %in% shared_RES_MAD_CTRL) %>% mutate(annotation = "RES_MAD_CTRL_shared")
   )
-  
+
   return(filtered_df_result)
 }
